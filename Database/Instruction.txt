@@ -1,0 +1,6 @@
+DiskobreDB File
+ Creates DATABASE Name: Diskobre and All the tables
+
+Diskobre_tables
+ Creates Tables All tables 
+	note: you need to create db first to import this file
