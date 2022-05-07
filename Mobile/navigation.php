@@ -216,16 +216,20 @@ if(isset($_GET['catId'])) $categoryId = $_GET['catId'];
       if(mysqli_num_rows($getEstablish) > 0){
         while($s = mysqli_fetch_array($getEstablish)){ 
           $userFk = $s['user_fk'];
-          
+          $estabId = $s['establishment_id'];
           $getUser_type = mysqli_query($link, "SELECT user_type as userType from user WHERE user_id='{$userFk}'");
+          // $getOpTime =  mysqli_query($link, "SELECT  * FROM operatingtime  WHERE Establishmentid_fk='{$estabId}'");
 
+          
           if(mysqli_num_rows($getUser_type) > 0){
             while($a = mysqli_fetch_array($getUser_type)){
                 
               $userType = $a['userType'];
-             
+              
              }
           }
+    
+
           ?>
             <div style="text-decoration:none" >
               <!-- card -->

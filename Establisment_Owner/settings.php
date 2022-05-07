@@ -11,6 +11,7 @@
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/styles.css" rel="stylesheet" type="text/css">
   <link href="css/diskobre-owner.styles.css" rel="stylesheet" type="text/css">
+  <link href="css/diskobre-owner.webflow.css" rel="stylesheet" type="text/css">
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
   <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
@@ -79,24 +80,79 @@ if(isset($_POST['approve'])) {
 
   $password = $_POST['password'];
 
-  
-  
+  if($_FILES["business_permit-img1"]["error"] == 0) {
+    permit_upload1();
+  }
+  if($_FILES["business_permit-img2"]["error"] == 0){
+    permit_upload2();
+  } 
+
   // ? consult with dan
    $updateUser = mysqli_query($link,"UPDATE user SET fname='$fname', middle='$middle', lname='$lname', username='$username' WHERE user_id='{$userId}'");
    $updateEstab = mysqli_query($link,"UPDATE establishment SET  estab_email='$email',estab_name='$establishmentName', address='$address', description='$description',contact='$contact' WHERE user_fk='{$userId}'");
 
 
-  header("location: dashboard.php");
+  // header("location: dashboard.php");
 
 
 }
 
+?>
 
+<!-- function for business permit1 upload -->
+<?php 
 
+//permit_upload1 function 
+ function permit_upload1(){
 
+  $estabId = $_GET['estab_id'];
+
+  $target_dir = "../uploads/";
+  $target_file1 = $target_dir .basename($_FILES["business_permit-img1"]["name"]);
+
+  $imageFileType1 = strtolower(pathinfo($target_file1,PATHINFO_EXTENSION));
+
+  $establishmentName = $_POST['establishmentName'];
+  $imagename1 = $estabId.$establishmentName."businesspermit1.".$imageFileType1;
+  $filename1 = $target_dir.$imagename1;
+
+  if (move_uploaded_file($_FILES["business_permit-img1"]["tmp_name"],$filename1)) {
+    $link = mysqli_connect('localhost','root','');
+    mysqli_select_db($link,"diskobre");
+    mysqli_query($link,"INSERT INTO `estab_image`( `estab_id_fk`, `image`, `image_type`) VALUES ('$estabId','$imagename1','4')");
+ 
+  }
+
+ }
+//end of permit_upload1 function
+
+function permit_upload2(){
+
+  $estabId = $_GET['estab_id'];
+
+  $target_dir = "../uploads/";
+  $target_file2 = $target_dir .basename($_FILES["business_permit-img2"]["name"]);
+
+  $imageFileType2 = strtolower(pathinfo($target_file2,PATHINFO_EXTENSION));
+
+   $establishmentName = $_POST['establishmentName'];
+   $imagename2 = $estabId.$establishmentName."businesspermit2.".$imageFileType2;
+   $filename2 = $target_dir.$imagename2;
+
+  if (move_uploaded_file($_FILES["business_permit-img2"]["tmp_name"],$filename2)) {
+    $link = mysqli_connect('localhost','root','');
+    mysqli_select_db($link,"diskobre");
+    mysqli_query($link,"INSERT INTO `estab_image`( `estab_id_fk`, `image`, `image_type`) VALUES ('$estabId','$imagename2','4')");
+    // mysqli_close($link);
+  }
+
+}
 
 
 ?>
+
+
+
 <body>
   <div class="body-wrapper">
     <div class="left-panel"><img src="images/Group-349.svg" loading="lazy" alt="" class="admin-logo-login mx-1">
@@ -134,64 +190,48 @@ if(isset($_POST['approve'])) {
             </a>
           </div>
           <div class="weight-70 admn-right-panel">
-            <div class="subcription-box">
+          <div class="subcription-box">
               <div class="subs-headers">
-                <div class="actve-subs"><?php 
-                  $qSelectSub = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = {$userId}");
-                  if(mysqli_num_rows($qSelectSub) > 0){
-                    $subscription = mysqli_fetch_assoc($qSelectSub);
-                    $start_at = $subscription['start_at'];
-                    $expire_at = $subscription['expire_at'];
-                    $current_date = date("Y-m-d");
-
-                    $date1 = date_create($expire_at);
-                    $date2 = date_create($current_date);
-                    $diff = date_diff($date1,$date2);
-                    // echo $diff->format("%R%a");
-                    if(number_format($diff->format("%R%a")) > 0){
-                      echo "Expired Subscription";
-                      $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'inactive' WHERE user_id_fk = {$userId}");
-                    }else{
-                      echo "Active Subscription";
-                      $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'active' WHERE user_id_fk = {$userId}");
-                    }
-                  }else{
-                    echo "No Subscription";
-                  }
-                ?></div>
-                <div class="text-block-2">
-                  <?php 
-                  if(isset($start_at)){
-                    $date1=date_create($start_at);
-                    $date2=date_create($expire_at);
-                    $diff=date_diff($date1,$date2);
-                    // echo $diff->format("%R%a");
-                    if(number_format($diff->format("%R%a")) >= 365){
-                      echo 'P758<span class="spe-char">/</span><span class="spe-color">month</span>';
-                    }else{
-                      echo 'P79<span class="spe-char">/</span><span class="spe-color">month</span>';
-                    }
-                  } echo "-";
-                  ?>
-                </div>
+                <div class="actve-subs"><span class="text-span-3">Status:</span> INACTIVE</div>
               </div>
               <div class="subs-range-box">
-                <div class="start-subs">
-                  <div class="text-block-4"><?php if( isset($start_at) ) echo date_format(date_create($start_at),"M d, Y"); else echo "-"; ?></div>
-                </div>
-                <div class="text-block-3">to</div>
-                <div class="end-subs">
-                  <div class="text-block-4"><?php if( isset($expire_at) ) echo date_format(date_create($expire_at),"M d, Y"); else echo "-"; ?></div>
+                <div class="subscription-divider">
+                  <div class="subs-box w-row">
+                    <div class="subscribe-now w-col w-col-6">
+                      <p class="paragraph-2" style="font-family: Arial;"><span class="text-span-4">Want to unlock the Dashboard Analytics?</span><br><br>Choose type of subscription. Just send your payment to [ <strong>Diskobre - 09205149329</strong> ] via Gcash only. After paying, kindly upload a screenshot of the receipt for proof of payment.</p>
+                      <div class="subscription-type">
+                        <h5 class="heading">Subscription Type: </h5>
+                        <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+                          <div class="dropdown-toggle w-dropdown-toggle">
+                            <div class="w-icon-dropdown-toggle"></div>
+                            <div>Subscription Type</div>
+                          </div>
+                          <nav class="w-dropdown-list">
+                            <a href="#" class="w-dropdown-link">Link 1</a>
+                            <a href="#" class="w-dropdown-link">Link 3</a>
+                          </nav>
+                        </div>
+                      </div>
+                      <a href="#" class="subscribe-btn w-button">Subscribe Now!</a>
+                    </div>
+                    <div class="upload-receipt w-col w-col-6">
+                      <div class="upload-box">
+                        <h4 class="upload-text">Upload Receipt</h4>
+                        <div class="buttons flex-v">
+                          <a href="#" class="upload-btn upload w-button">Upload Receipt</a>
+                          <div class="span-text">No file chosen, yet.</div>
+                          <a href="#" class="upload-btn w-button">Submit</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="admn-label-box">
-              <div class="estab-text">Establishment Information</div>
-              <p class="paragraph text-p-color">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis interdum vestibulum aliquet odio vel nisi, laoreet vel lectus. Nibh proin nisl bibendum porttitor.</p>
+
             </div>
             <div class="form-block w-form">
               <!-- form -->
-              <form id="email-form" name="email-form" data-name="Email Form" method="POST">
+              <form id="email-form" name="email-form" data-name="Email Form" method="POST" enctype="multipart/form-data">
                 <div class="estab-accnt-ttle">Establishment Account</div>
                 <p class="paragraph accnt-p">This is the credentials to be used in logging in to your account.</p>
                   <label for="Username" class="form-label">Username</label>
@@ -218,9 +258,14 @@ if(isset($_POST['approve'])) {
                   <div class="w-embed"><input type="file" name="estab-featured-img" multiple=""></div>
                 </div><label for="Username-2" class="form-label">Business Permit</label>
                 <p class="paragraph accnt-p">Must upload 2 permits for verification.</p>
+
                 <div class="text-field-2">
-                  <div class="w-embed"><input type="file" name="estab-featured-img" multiple=""></div>
+                  <div class="w-embed"><input type="file" name="business_permit-img1" multiple=""></div>
                 </div>
+                <div class="text-field-2">
+                  <div class="w-embed"><input type="file" name="business_permit-img2" multiple=""></div>
+                </div>
+
                 <div class="estab-accnt-ttle mb-1 mt-3">Establishment Owner</div>
                   <label for="First-Name" class="form-label">First Name</label>
                   <input type="text" value="<?php echo($fname) ?>" name="fname" class="text-field-settings spe-char w-input" maxlength="256"  data-name="First Name" placeholder="First Name" id="First-Name" required="">

@@ -25,8 +25,9 @@ $link = mysqli_connect("localhost", "root", "");
 
   if(isset($_SESSION["uname"])) {
   
-    $uname = $_SESSION["uname"];
-  
+    $uname = $_SESSION["uname"];  
+    $userId = $_SESSION["userId"];
+   
   }
   // ? If there is no session go back to login page
   else {
@@ -108,6 +109,7 @@ $userId = $_GET['userId'];
           <div class="info-text"><span class="text-ligh-dark">Hi,</span> <?php echo($_SESSION['uname']) ?><span class="text-span">!</span></div>
         </div>
         <nav class="dropdown-list w-dropdown-list">
+          <a href="edit-account.php?userId=<?php echo($userId)?>" class="info-drop-down-item w-dropdown-link">Edit Profile</a>
           <a href="user-management.php?logout=true" class="info-drop-down-item w-dropdown-link">Logout</a>
         </nav>
       </div>
@@ -175,13 +177,9 @@ $userId = $_GET['userId'];
                                         <img src="images/Group-418.svg" loading="lazy" alt="" class="action-icon">
                                       </a>
                                   
-                                      <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['user_id'];?>">
+                                      <!-- <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-"> -->
                                   </div>
                               </div>
-                                  
-
-
-          
                          <?php
 
                                  
@@ -214,7 +212,7 @@ $userId = $_GET['userId'];
                                             <img src="images/Group-418.svg" loading="lazy" alt="" class="action-icon">
                                           </a>
                                       
-                                          <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['user_id'];?>">
+                                          <!-- <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-"> -->
                                       </div>
                                   </div>
                                       
@@ -234,7 +232,7 @@ $userId = $_GET['userId'];
 
           
          
-            <div id="w-node-_8231d618-cdfc-8713-aaa3-75cea7e30fbb-4302a13f" class="cell-holder"><img src="images/Group-418.svg" loading="lazy" alt="" class="action-icon"><img src="images/Group-417.svg" loading="lazy" alt="" class="action-icon"><img src="images/Group-416_3.svg" loading="lazy" alt="" class="action-icon"></div>
+            <!-- <div id="w-node-_8231d618-cdfc-8713-aaa3-75cea7e30fbb-4302a13f" class="cell-holder"><img src="images/Group-418.svg" loading="lazy" alt="" class="action-icon"><img src="images/Group-417.svg" loading="lazy" alt="" class="action-icon"><img src="images/Group-416_3.svg" loading="lazy" alt="" class="action-icon"></div> -->
           </div>
         </div>
         
@@ -284,13 +282,13 @@ $userId = $_GET['userId'];
                   </div> -->
       
                   <label for="username">Username</label>
-                  <input type="text" class="text-field w-input" value="<?= $fUser['username'] ?>" maxlength="100" name="username" placeholder="Username" id="username" required>
+                  <input type="text" class="text-field w-input" value="<?= $fUser['username'] ?>" maxlength="100" name="username" placeholder="Username" id="username" disabled>
       
                   <label for="fname">First Name</label>
-                  <input type="text" class="text-field w-input" value="<?= $fUser['fname'] ?>" maxlength="100" name="fname"placeholder="First Name" id="fname" required>
+                  <input type="text" class="text-field w-input" value="<?= $fUser['fname'] ?>" maxlength="100" name="fname"placeholder="First Name" id="fname" disabled>
                   
                   <label for="lname">Last Name</label>
-                  <input type="text" class="text-field w-input" value="<?= $fUser['lname'] ?>" maxlength="100" name="lname"  placeholder="Last Name" id="lname" required>
+                  <input type="text" class="text-field w-input" value="<?= $fUser['lname'] ?>" maxlength="100" name="lname"  placeholder="Last Name" id="lname" disabled>
                   
                   <!-- <label for="name">Birthdate</label>
                   <div class="w-embed">
@@ -298,9 +296,8 @@ $userId = $_GET['userId'];
                   </div> -->
                   
                   <label for="email">Email Address</label>
-                  <input type="email" value="<?= $fUser['email'] ?>"  class="text-field w-input" maxlength="100" name="email" data-name="Email" placeholder="Email Address" id="email" required="">
+                  <input type="email" value="<?= $fUser['email'] ?>"  class="text-field w-input" maxlength="100" name="email" data-name="Email" placeholder="Email Address" id="email" disabled>
                   <input type="hidden" name="userId" value="<?php echo($_GET['user_id'])?>">
-                  <input type="submit" value="Update user information" class="primary-button user-submit w-button" name ="submit-edit">
                 </form>
               </div>
             </div>

@@ -18,16 +18,16 @@ if(isset($_GET["logout"])) {
 
             $userId = $_SESSION["userId"];
             $uname = $_SESSION['uname'];
-            $userF = mysqli_query($link,"SELECT estab_name,establishment_id, category_id from establishment WHERE user_fk='$userId'");
+            $userF = mysqli_query($link,"SELECT estab_name,establishment_id, category_id,status from establishment WHERE user_fk='$userId'");
               while ($fUser = mysqli_fetch_array($userF)) {
                 $categoryId = $fUser['category_id'];
                 $estabId = $fUser['establishment_id'];
                 $estabName = $fUser['estab_name'];
-               
+                $status = $fUser['status'];
+                
               }
+             
 
-          
-          
         
       $fCategory = mysqli_query($link,"SELECT estcat from category WHERE category_id='$categoryId'");
 
@@ -114,6 +114,21 @@ if(isset($_GET["logout"])) {
   //  print_r ($stackvis);
   //  print_r ($visitStats[0]);
   //  print_r ($visitStats[1]);
+
+
+  $subscription = mysqli_query($link, "SELECT status  from subscription WHERE user_id_fk='{$userId}'");
+
+  if(mysqli_num_rows($subscription) > 0){
+    while($s = mysqli_fetch_array($subscription)) {
+      $foundSub  = "found";
+        
+    }}
+    else {
+      $foundSub = "notFound";
+      
+    }
+
+  
   
   ?>
 <!DOCTYPE html><!--  This site was created in diskobre. http://www.diskobre.com  -->
@@ -183,7 +198,8 @@ if(isset($_GET["logout"])) {
     </div>
     <div class="right-panel">
       <div data-hover="false" data-delay="0" class="admin-info w-dropdown">
-        <div class="info-drop-down w-dropdown-toggle"><img src="images/unsplash_X6Uj51n5CE8.png" loading="lazy" alt="" class="drop-down-icon">
+        <div class="info-drop-down w-dropdown-toggle">
+          <img src="images/unsplash_X6Uj51n5CE8.png" loading="lazy" alt="" class="drop-down-icon">
           <div class="info-text spe-char"><span><?php echo($uname) ?></span></div>
         </div>
         <nav class="dropdown-list w-dropdown-list">
@@ -197,7 +213,15 @@ if(isset($_GET["logout"])) {
             <div class="box inbox w-clearfix">
               <img src="images/unsplash_X6Uj51n5CE8.png" loading="lazy" id="w-node-_4809819e-b50e-5bbf-03de-8486d068159b-2e3620ab" alt="" class="pp-mssgs">
               <h2 id="w-node-_10981c81-cc0e-ba18-c29a-d9baf0efbb36-2e3620ab" class="total-heading pp-heading" ><?php echo($estabName) ?></h2>
-              <img src="images/codicon_verified-filled.svg" loading="lazy" id="w-node-_2f90dcc5-9f89-1247-286a-1e76768b8731-2e3620ab" alt="" class="pp-mssgs owner-verify">
+              
+              <?php 
+                if($status == 2) { ?>
+                  <img src="images/codicon_verified-filled.svg" loading="lazy" id="w-node-_2f90dcc5-9f89-1247-286a-1e76768b8731-2e3620ab" alt="" class="pp-mssgs owner-verify">
+
+               <?php }
+              
+              ?>
+             
               <h3 id="w-node-_292ccf9f-a63a-1a41-84f3-d17f8b87e374-2e3620ab" class="h3-mssg"><?php echo($foundCategory); ?></h3>
             </div>
             <div class="box mr-1">
@@ -228,15 +252,23 @@ if(isset($_GET["logout"])) {
           </div>
         </div>
         <div class="grid">
+          <?php if($foundSub == "notFound") { 
 
-          <div class="box large">
+              $blur  = "0.3";
+           }
+            else {
+              $blur  = "1";
+
+            }
+           ?>
+          <div class="box large" style="opacity:<?php echo($blur); ?>">
             <h3 class="box-heading">Visitors</h3>
             <div class="date">Last 30 days</div>
             <!-- visit chart -->
             <div class="chart" id="curve_chart"></div>
           </div>
 
-          <div class="box category">
+          <div class="box category" style="opacity:<?php echo($blur); ?>">
             <h3 class="box-heading">Most search category</h3>
             <div class="of-auto">
               <div class="w-layout-grid table-grid row estab category">
@@ -252,7 +284,7 @@ if(isset($_GET["logout"])) {
                   </div>
                 </div>
               </div>
-              <div class="w-layout-grid table-grid row estab category">
+              <div class="w-layout-grid table-grid row estab category" style="opacity:<?php echo($blur); ?>">
                 <div id="w-node-_8745b8aa-e563-a872-7595-e41698c841ee-2e3620ab" class="cell-holder icons-in-cell">
                   <div class="compe-circle category icon"><img src="images/Vector-4.svg" loading="lazy" width="31" alt="" class="cell-icon"></div>
                 </div>
@@ -265,7 +297,7 @@ if(isset($_GET["logout"])) {
                   </div>
                 </div>
               </div>
-              <div class="w-layout-grid table-grid row estab category">
+              <div class="w-layout-grid table-grid row estab category" >
                 <div id="w-node-_9634be15-131f-366e-b48e-6614bf3554ef-2e3620ab" class="cell-holder icons-in-cell">
                   <div class="compe-circle category icon"><img src="images/Vector-3.svg" loading="lazy" width="31" alt="" class="cell-icon"></div>
                 </div>
@@ -278,7 +310,7 @@ if(isset($_GET["logout"])) {
                   </div>
                 </div>
               </div>
-              <div class="w-layout-grid table-grid row estab category">
+              <div class="w-layout-grid table-grid row estab category" >
                 <div id="w-node-cb77fd46-1ba3-3207-d111-833c86b6c99e-2e3620ab" class="cell-holder icons-in-cell">
                   <div class="compe-circle category icon"><img src="images/Vector-2.svg" loading="lazy" width="31" alt="" class="cell-icon"></div>
                 </div>
@@ -321,7 +353,7 @@ if(isset($_GET["logout"])) {
           </div>
 
           <!-- competitor -->
-          <div class="box large">
+          <div class="box large" style="opacity:<?php echo($blur); ?>">
             <h3 class="box-heading">Top Competitors    <span class="estab-spec"><?php echo($foundCategory); ?></span></h3>
             <div class="date w-clearfix">Last 30 days    <span class="ttl-vst">Total Visits</span></div>
             <div class="w-layout-grid table-grid row estab">
@@ -395,7 +427,7 @@ if(isset($_GET["logout"])) {
               </div>
             </div>
           </div>
-          <div class="box" id = "chartContainer">
+          <div class="box" id = "chartContainer" style="opacity:<?php echo($blur); ?>" >
            
           </div>
         </div>

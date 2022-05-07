@@ -1,15 +1,16 @@
 <!DOCTYPE html><!--  This site was created in diskobre. http://www.diskobre.com  -->
 <!--  Last Published: Sun Mar 27 2022 17:09:56 GMT+0000 (Coordinated Universal Time)  -->
-<html data-wf-page="621b7684a2c038d1c2adfbd5" data-wf-site="62165100d93c4633055bbbac">
+<html data-wf-page="6273caa5ad1898319be342b4" data-wf-site="62165100d93c4633055bbbac">
 <head>
   <meta charset="utf-8">
-  <title>View Establishment</title>
-  <meta content="View Establishment" property="og:title">
-  <meta content="View Establishment" property="twitter:title">
+  <title>view establishment 2.0</title>
+  <meta content="view establishment 2.0" property="og:title">
+  <meta content="view establishment 2.0" property="twitter:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
-  <meta content="diskobre" name="generator">
+  <meta content="Webflow" name="generator">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
-  <link href="css/styles.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/diskobre-admin.webflow.css" rel="stylesheet" type="text/css">
   <link href="css/diskobre-admin.styles.css" rel="stylesheet" type="text/css">
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
   <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
@@ -28,7 +29,6 @@ date_default_timezone_set("Asia/Manila");
  $estabId = $_GET['estab_id'];
 //  ? View etablishment
 $type = $_GET['type'];
-
 
 if($type == 'estab') {
   $urlRedirect = "establishment-management.php";
@@ -94,7 +94,6 @@ if(isset($_POST['approve'])) {
   $contact = $_POST['contact'];
 
   $userId = $_POST['user_fk'];
-  
   // ? consult with dan
   $updateUser = mysqli_query($link,"UPDATE user SET fname='$fname', middle='$middle', lname='$lname', username='$username' WHERE user_id='{$userId}'");
   $updateEstab = mysqli_query($link,"UPDATE establishment SET  estab_email='$email',estab_name='$establishmentName', address='$address', description='$description',contact='$contact' WHERE user_fk='{$userId}'");
@@ -164,6 +163,11 @@ else {
   $status = "null";
 }
  
+
+ if(isset($_GET['status'])) {
+  $gotStatus = $_GET['status'];
+
+ }
 ?>
 <body>
   <div class="body-wrapper">
@@ -185,84 +189,45 @@ else {
     
       <div class="page-container">
 
+      <?php if($gotStatus == "approved") { ?>
       <form method="POST">
         <h1 class="page-title">Establishment Management <span class="text-separator">&gt;</span><span class="small"> View establishment</span></h1>
-        <div class="estab-wrapper">
+        <div class="estab-wrapper" style="margin-bottom: 0;">
           <div class="estab-head-content">
             <div class="content-hbetween mb-2">
-              <div class="content-vcenter">
-                <div class="flex-v mr-4">
-                  <div class="estab-view-text">Status:</div>
-                  <div class="input-status-estab w-embed">
-                  <h1 style="color:green">
-                    <?php
-                      $qSelectSub = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = {$userId}");
-                      if(mysqli_num_rows($qSelectSub) > 0){
-                        while($subscription = mysqli_fetch_assoc($qSelectSub)){
-                          $start_at = $subscription['start_at'];
-                          $expire_at = $subscription['expire_at'];
-                          $current_date = date("Y-m-d");
-      
-                          $date1 = date_create($start_at);
-                          $date2 = date_create($expire_at);
-                          $diff = date_diff($date1,$date2);
-                          // echo $diff->format("%R%a");
-                          if(number_format($diff->format("%R%a")) > 0){
-                            $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'active' WHERE user_id_fk = {$userId}");
-                            $status = 'active';
-                          }else{
-                            $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'inactive' WHERE user_id_fk = {$userId}");
-                            $status = 'inactive';
-                          }
-                          
-                        }
-                        
-                      }
-                    ?>
-                    </h1>
-                    <?php 
-                        echo($status);
-                        if($status == 'active') { 
-                         
-                          $disabled = 'disabled';?>
-                          <h1 style="color:green">ACTIVE</h1>
-                       <?php } else { 
-                          $disabled = 'enabled';
-                         ?>
-                        
-                        <h1 style="color:red">INACTIVE</h1>
-                        <?php 
-                      } ?>
-                    </select></div>
+            <div class="content-vcenter-2 sub-type">
+                <div class="flex mr-4 subs">
+                  <div class="estab-view-text-2 sub-title subs">Subscription Details</div>
                 </div>
-                <div class="flex-v">
-                  <div class="estab-view-text">Subscription type:</div>
-                  <div class="input-status-estab w-embed">
-                    <select name="estab-subscription" class="estab-dropdown-item subscription" <?php echo($disabled)?> >
-                      <option value="79">79/monthly</option>
-                      <option value="758">758/Anually</option>
-                    </select>
-                  </div>
+                <div class="flex">
+                  <div class="estab-view-text-2">Subscription type: <span class="text-span-5">NONE</span></div>
                 </div>
               </div>
               <div>
-                <input  class="btn-1" type="submit" name= "sub-submit" style="width: 100%;
-                    height: 40px;
-                    border-radius: 8px;
-                    background-color: #fff;
-                    font-family: 'light aftika', sans-serif;
-                    color: #293733;
-                    line-height: 1.2;
-                    font-weight: 300;
-                    text-align: center;
-                    border:none;
-                    cursor:pointer;"  
-                    <?php echo($disabled)?>
-                  />
+                <a href="#" class="link-2">View Receipt</a>
               </div>
             </div>
+            <div class="content-center-2 subscription">
+              <div class="columns w-row">
+                <div class="column w-col w-col-6">
+                  <div class="st-date">Start date</div>
+                  <div class="form-field">
+                    <div class="html-embed w-embed"><input type="date" name="bday" class="input-field" style="width:100%;"></div>
+                  </div>
+                </div>
+                <div class="column-2 w-col w-col-6">
+                  <div class="st-date">End Date</div>
+                  <div class="form-field">
+                    <div class="html-embed w-embed"><input type="date" name="bday" class="input-field" style="width:100%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
-            <div class="content-center">
+      <?php } ?>
+            <!-- <div class="content-center">
               <div class="content-vcenter">
                 <div class="content-vcenter mr-2">
                   <div class="estab-view-text mr-1">Start Date</div>
@@ -284,7 +249,7 @@ else {
           
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="estab-body-view">
             <div class="w-form">
@@ -311,24 +276,57 @@ else {
                     <input disabled value= "<?php echo($address) ?>" type="text" name = "address" class="text-field estab-view w-input" maxlength="256" name="estab-address" data-name="estab address" placeholder="Dionisio St, Brgy. Zapatera, Cebu City, Cebu, 6000" id="estab-address"  required="true">
                   <label for="estab-contact" class="h4-estab-view">Contact number</label>
                     <input disabled  value= "<?php echo($contact) ?>" name = "contact" type="tel" class="text-field estab-view w-input"  name="estab-contact" data-name="estab contact" placeholder="09123456789" id="estab-contact"  required="true" maxlength="9" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" >
-                  <label for="estab-" class="h4-estab-view" > Email</label>
+                  <label for="estab-" class="h4-estab-view" >Email</label>
                     <input disabled   value= "<?php echo($estab_email) ?>" name="email-establish"  type="email" class="text-field estab-view w-input" maxlength="256"  data-name="estab contact" placeholder="johnDoe@gmail.com" id="estab-contact" required="true">
-                  
+                  <label for="estab-" class="h4-estab-view" >Business Permit Image</label>
+
+                    <!-- imgs lagay mo dito boss dave-->
+                  <div class="estab-view flex-v">
+                       
+                      <?php 
+                          $conn = new mysqli("localhost","root","","diskobre");
+                          // image type 4 is business permit
+                          $sql = "SELECT * FROM `estab_image` WHERE image_type = 4 && estab_id_fk = '$estabId' LIMIT 2";
+                          $result = $conn->query($sql);
+                      ?>
+               
+
+                      <?php  
+                        if ($result->num_rows > 0) {
+                          while($data = $result->fetch_assoc()){ 
+                      ?>
+                        <div class="gallery">
+                            <img src="../uploads/<?php echo $data['image']?>" alt="" style="width:600; height: 200px;"  onerror="this.src='../uploads/no-image.png';">
+                            <!-- <p><?php echo $data['image']?></p> -->
+                      
+                        </div>
+                    <?php }}else{?>
+                      <div class="gallery">
+                            <img src="../uploads/no-image.png" alt="" style="width:600; height: 200px;" >
+                          
+                        </div>
+                    <?php }?>
+                  </div>
                  
                   
                   <h3 class="h3-estab-view">Establishment Owner</h3>
                   <label for="owner-fname" class="h4-estab-view">First name</label>
                     <input disabled name="fname" value="<?php echo($fname) ?>" type="text" class="text-field estab-view w-input" maxlength="256" name="owner-fname" data-name="owner fname" placeholder="First name" id="owner-fname"  required="true">
                   <label for="Owner-mname" class="h4-estab-view">Middle name <span class="special-char">(</span>Optional<span class="special-char">)</span></label>
-                    <input disabled name="middle" value="<?php echo($middle) ?>" type="text" class="text-field estab-view w-input" maxlength="256" name="Owner-mname" data-name="Owner mname" placeholder="Middle name" id="Owner-mname"  required="true"><label for="Owner-lname" class="h4-estab-view">Last name</label>
+                    <input disabled name="middle"  type="text" class="text-field estab-view w-input" maxlength="256" name="Owner-mname" data-name="Owner mname" placeholder="Middle name" id="Owner-mname"  required="true"><label for="Owner-lname" class="h4-estab-view">Last name</label>
                     <input disabled name="lname"  value="<?php echo($lname) ?>" type="text" class="text-field estab-view w-input" maxlength="256" name="Owner-lname" data-name="Owner lname" placeholder="Last name" id="Owner-lname"  required="true">
                 </div>
                 <div class="content-center">
+                <?php if($gotStatus == "denied" || $gotStatus == "pending") { ?>
                   <div class="content-vcenter">
-                    <button type="button" class="cancel-btn w-button " id="btn-deny">Deny</button>
+                 
+                    <button type="button" class="cancel-btn w-button " id="btn-deny"  >Deny</button>
                     <div class="px-3"></div>
-                    <input type="button" value="Approve" name="approve" class="primary-button estab-view w-button" id="btn-approve">
+                    <input type="button" value="Approve" name="approve" class="primary-button estab-view w-button" id="btn-approve" >
+                   
+                   
                   </div>
+                  <?php } ?>
                 </div>
                 
                 <!-- Deny Modal -->
@@ -344,7 +342,7 @@ else {
                         <div id="btn-close-modal">Cancel</div>
                       </div>
                       <div class="primary-button confirmation">
-                        <button class="primary-btn-text" name="deny-estab" style="border: none; background: none;">Confirm</button>
+                        <button   class="primary-btn-text" name="deny-estab" style="border: none; background: none;">Confirm</button>
                       </div>
                     </div>
                   </div>
@@ -369,12 +367,6 @@ else {
                   </div>
                 </div>
               </form>
-              <div class="w-form-done">
-                <div>Thank you! Your submission has been received!</div>
-              </div>
-              <div class="w-form-fail">
-                <div>Oops! Something went wrong while submitting the form.</div>
-              </div>
             </div>
           </div>
         </div>

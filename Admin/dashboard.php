@@ -24,6 +24,7 @@ session_start();
 if(isset($_SESSION["uname"])) {
 
   $uname = $_SESSION["uname"];
+  $userId = $_SESSION["userId"];
 
 }
 // ? If there is no session go back to login page
@@ -58,13 +59,10 @@ $allUser = $dataUser['allUsers'];
 
 // ? Finding total for establishment owners
 
-$ownerNum = mysqli_query($link, "SELECT COUNT(*) AS allEstablishOwner FROM user WHERE user_type= 3");//? CALL QUERY for registered user
+$ownerNum = mysqli_query($link, "SELECT COUNT(*) AS allEstablishOwner FROM establishment JOIN user ON user.user_id = establishment.user_fk WHERE user.user_type= 3");//? CALL QUERY for registered user
 $dataOwner=mysqli_fetch_array($ownerNum);
 
 $allDataOwner = $dataOwner['allEstablishOwner'];
-
-
-
 
 ?>
 
@@ -90,6 +88,7 @@ $allDataOwner = $dataOwner['allEstablishOwner'];
           <div class="info-text"><span class="text-ligh-dark">Hi,</span> <?php echo($uname)?><span class="text-span">!</span></div>
         </div>
         <nav class="dropdown-list w-dropdown-list">
+          <a href="edit-account.php?userId=<?php echo($userId)?>" class="info-drop-down-item w-dropdown-link">Edit Profile</a>
           <a href="dashboard.php?logout=true" class="info-drop-down-item w-dropdown-link">Logout</a>
         </nav>
       </div>

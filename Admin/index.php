@@ -46,10 +46,14 @@ if(isset($_POST['login'])) {
 
       if(mysqli_num_rows($pas) > 0) {
               //? If value match then create a session
-              session_start();
+        while($s = mysqli_fetch_array($pas)) {
+
+            $userId = $s['user_id'];
+
+        }
               $_SESSION["uname"] = $username;
               $_SESSION["userType"] = 1;
-              
+              $_SESSION["userId"] = $userId;
               header("Location: dashboard.php");
           
               //! Should be hashed, did not put a hash yet because in the admin it is only login

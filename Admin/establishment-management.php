@@ -100,6 +100,7 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
           <div class="info-text"><span class="text-ligh-dark">Hi,</span> <?php echo($_SESSION['uname'])?><span class="text-span">!</span></div>
         </div>
         <nav class="dropdown-list w-dropdown-list">
+          <a href="edit-account.php?userId=<?php echo($userId)?>" class="info-drop-down-item w-dropdown-link">Edit Profile</a>
           <a href="establishment-management.php?logout=true" class="info-drop-down-item w-dropdown-link">Logout</a>
         </nav>
       </div>
@@ -214,10 +215,10 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                                   <div class="cell-data"><?php echo $status; ?></div>
                                 </div>
                                 <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
-                                  <div class="cell-data">Active</div>
+                                  <div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div>
                                 </div>
                                 <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
-                                    <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
+                                    <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status);?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                                     <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
                                  </div>
                               </div>
@@ -271,10 +272,10 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                                     <div class="cell-data"><?php echo $status; ?></div>
                                   </div>
                                   <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
-                                    <div class="cell-data">Active</div>
+                                    <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
                                   </div>
                                   <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
-                                    <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
+                                    <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status);?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                                     <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
                                   </div>
                                 </div> <?php 
@@ -361,10 +362,10 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                                     <div class="cell-data"><?php echo $status; ?></div>
                                   </div>
                                   <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
-                                    <div class="cell-data">Active</div>
+                                    <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
                                   </div>
                                   <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
-                                    <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
+                                    <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status);?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                                     <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
                                  </div>
                                 </div>
@@ -461,10 +462,10 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                             <div class="cell-data"><?php echo $status; ?></div>
                           </div>
                           <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
-                            <div class="cell-data">Active</div>
+                            <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
                           </div>
                           <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
-                            <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
+                            <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status) ?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                             <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
                           </div>
                         </div>
@@ -561,10 +562,10 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                             <div class="cell-data"><?php echo $status; ?></div>
                           </div>
                           <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
-                            <div class="cell-data">Inactive</div>
+                            <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
                           </div>
                           <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
-                            <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
+                            <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status)?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                             <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
                           </div>
                         </div>
