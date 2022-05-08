@@ -204,7 +204,22 @@ else {
                 </div>
               </div>
               <div>
+                <?php
+                          $conn1 = new mysqli("localhost","root","","diskobre");
+                          // image type 4 is business permit
+                          $sql1 = "SELECT * FROM `estab_image` WHERE image_type = 5 && estab_id_fk = '$estabId' LIMIT 1";
+                          $result1 = $conn1->query($sql1);                    
+                ?>
                 <a href="#" class="link-2">View Receipt</a>
+                <br>
+                <?php  
+                  while($data1 = $result1->fetch_assoc()){ 
+                ?>
+                  <img src="../uploads/<?php echo $data1['image']?>" onerror="this.src='../uploads/no-image.png';"  alt="" style="height:300px; width:150px;">
+
+                <?php }?>
+                
+                 
               </div>
             </div>
             <div class="content-center-2 subscription">
