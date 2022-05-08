@@ -104,7 +104,7 @@
   <!-- Mapbox JS -->
   <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
   <script>
-      mapboxgl.accessToken = 'pk.eyJ1IjoiZGFuZGFuaWVsMzAwMCIsImEiOiJjbDBoM2p5azMwMmk5M2RvZ202ZXpxNGN1In0.DwxOgkdfNnGcqlrqGFGECg';
+      mapboxgl.accessToken = 'pk.eyJ1IjoiZGlza29icmUiLCJhIjoiY2wydnBlZDN2MGU0cjNpbXB2amd4dTlqYiJ9.J7FP7ZNPgwAGaUe8gQEcew';
       var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/streets-v11',

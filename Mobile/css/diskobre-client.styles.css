@@ -4,7 +4,11 @@ body {
   font-size: 14px;
   line-height: 1;
 }
-
+.cut-text { 
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .py-2 {
   padding-top: 2rem;
   padding-bottom: 2rem;

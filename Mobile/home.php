@@ -56,7 +56,10 @@ header('Location: index.php');
     <br>
     <br>
     <div class="greetings">
-      <h1 class="h1" style="font-family: Arial;">Hi, <?php echo $username;?><span class="spe-char">!</span></h1>
+      <h1 class="h1 " style="font-family: Arial; 
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;">Hi, <?php echo $username;?><span class="spe-char">!</span></h1>
       <h2 class="h3">Have a safe trip to your destination. Amping<span class="spe-char">!</span></h2>
     </div>
     <div class="category">
