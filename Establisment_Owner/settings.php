@@ -93,8 +93,10 @@ if(isset($_POST['approve'])) {
 
 
   // header("location: dashboard.php");
+}
 
-
+if(isset($_POST['submitReceipt'])){
+  upload_receipt();
 }
 
 ?>
@@ -120,6 +122,7 @@ if(isset($_POST['approve'])) {
     $link = mysqli_connect('localhost','root','');
     mysqli_select_db($link,"diskobre");
     mysqli_query($link,"INSERT INTO `estab_image`( `estab_id_fk`, `image`, `image_type`) VALUES ('$estabId','$imagename1','4')");
+    
  
   }
 
@@ -143,7 +146,28 @@ function permit_upload2(){
     $link = mysqli_connect('localhost','root','');
     mysqli_select_db($link,"diskobre");
     mysqli_query($link,"INSERT INTO `estab_image`( `estab_id_fk`, `image`, `image_type`) VALUES ('$estabId','$imagename2','4')");
-    // mysqli_close($link);
+  }
+
+}
+
+function upload_receipt(){
+  $estabId = $_GET['estab_id'];
+
+  $target_dir = "../uploads/";
+  $target_file2 = $target_dir .basename($_FILES["paymentReceiptImage"]["name"]);
+
+  $imageFileType2 = strtolower(pathinfo($target_file2,PATHINFO_EXTENSION));
+
+   
+   $imagename2 = $estabId."PaymentReceipt.".$imageFileType2;
+   $filename2 = $target_dir.$imagename2;
+
+  if (move_uploaded_file($_FILES["paymentReceiptImage"]["tmp_name"],$filename2)) {
+    $link = mysqli_connect('localhost','root','');
+    mysqli_select_db($link,"diskobre");
+    //update add image receipt
+    mysqli_query($link,"INSERT INTO `estab_image`( `estab_id_fk`, `image`, `image_type`) VALUES ('$estabId','$imagename2','5')");
+
   }
 
 }
@@ -217,12 +241,17 @@ function permit_upload2(){
                     <div class="upload-receipt w-col w-col-6">
                       <div class="upload-box">
                         <h4 class="upload-text">Upload Receipt</h4>
+                        <img src="" alt="" id="receipt-preview">
                         <div class="buttons flex-v">
-                          <a href="#" class="upload-btn upload w-button">Upload Receipt</a>
-                          <div class="span-text">No file chosen, yet.</div>
-                          <a href="#" class="upload-btn w-button">Submit</a>
+                          <a class="upload-btn upload w-button" onclick="clickPaymentReceiptUpload()" >Upload Receipt</a>
+                            <form method="POST" enctype="multipart/form-data">
+                              <div class="span-text"><input type="file" id="paymentReceiptImage" name="paymentReceiptImage" onchange="imagePreview(event)" style="display:none"></div>
+                              <!-- <a href="#" class="upload-btn w-button">Submit</a> -->
+                              <center><input type="submit" class="upload-btn w-button" value="Submit" name="submitReceipt"></center>
+                            </form>
                         </div>
                       </div>
+                      <br><br>
                     </div>
                   </div>
                 </div>
@@ -287,4 +316,20 @@ function permit_upload2(){
   <!-- <script src="js/diskobre.js" type="text/javascript"></script> -->
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
 </body>
+<script>
+  function clickPaymentReceiptUpload(){
+    var link = document.getElementById('paymentReceiptImage');
+    link.click();
+
+  }
+  function imagePreview(event){
+    if(event.target.files.length > 0){
+    var src = URL.createObjectURL(event.target.files[0]);
+    var preview = document.getElementById("receipt-preview");
+    preview.src = src;
+    preview.style.display = "block";
+
+  }
+  }
+</script>
 </html>

@@ -144,6 +144,7 @@ if(isset($_GET["logout"])) {
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/styles.css" rel="stylesheet" type="text/css">
   <link href="css/diskobre-owner.styles.css" rel="stylesheet" type="text/css">
+  <link href="css/rating.css" rel="stylesheet" type="text/css">
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
   <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
@@ -427,9 +428,88 @@ if(isset($_GET["logout"])) {
               </div>
             </div>
           </div>
+
+          <!-- age chart -->
           <div class="box" id = "chartContainer" style="opacity:<?php echo($blur); ?>" >
            
           </div>
+
+          <!-- ratings -->
+          <div class="box large" style="opacity:<?php echo($blur); ?>">
+            <h3 class="box-heading">Reviews</h3>
+
+            <!-- stars category -->
+            <div class="flex-h mb-1">
+              <div class="rating-wrapper active" star="0">
+                <?php 
+                  $conn2 = new mysqli("localhost","root","","diskobre");
+              
+                  $query1 = "SELECT COUNT(ra_rev_id) as  countRating, FORMAT((SUM(rate) / COUNT(ra_rev_id)),1) as avgRatings FROM rating_review WHERE estab_id_fk = '$estabId'";
+                  $dataresult = $conn2->query($query1); 
+                  $rateresult = $dataresult->fetch_array();
+                ?>
+            
+                <div class="text-rate" style="font-size:30px; padding-top:0.2rem;"><?php echo $rateresult['avgRatings']?></div>
+                <!-- <div class="flex-h"><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""></div> -->
+              </div>
+              <div class="rating-wrapper" star="5">
+                <div class="text-rate">5 Stars</div>
+                <div class="flex-h"><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""></div>
+              </div>
+              <div class="rating-wrapper" star="4">
+                <div class="text-rate"><span class="arial">4</span> Stars</div>
+                <div class="flex-h"><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""></div>
+              </div>
+              <div class="rating-wrapper" star="3">
+                <div class="text-rate">3 Stars</div>
+                <div class="flex-h"><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""></div>
+              </div>
+              <div class="rating-wrapper" star="2">
+                <div class="text-rate">2 Stars</div>
+                <div class="flex-h"><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""></div>
+              </div>
+              <div class="rating-wrapper" star="1">
+                <div class="text-rate">1 Stars</div>
+                <div class="flex-h"><img src="images/Star.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""><img src="images/Star-none.svg" loading="lazy" alt=""></div>
+              </div>
+            </div>
+
+            <?php
+  
+              $conn = new mysqli("localhost","root","","diskobre");
+              
+              $query = "SELECT rating_review.*,user.username,user.fname,user.lname FROM rating_review INNER JOIN user ON rating_review.user_id_fk = user.user_id WHERE estab_id_fk = '$estabId'";
+              $result = $conn->query($query);
+            
+            ?>
+            <!-- outputs -->
+            <div class="flex-v of-auto h-400">
+              <?php while($row = $result->fetch_assoc()){?>
+              <div class="rate-feedback-wrapper">
+                <div class="content-vcenter mb-0-5">
+                  <div class="rate-user"><?php echo $row['fname'];?> <?php echo $row['lname'];?></div>
+                  <div class="rate-stars-display">
+                    <?php for($i=1;$i<=5;$i++){?>
+                      <?php if($i>$row['rate']){?>
+                        <img src="images/Star-none.svg" loading="lazy" alt="" class="stars-display">
+                      <?php }else{?>
+                        <img src="images/Star.svg" loading="lazy" alt="" class="stars-display">
+                      <?php }?>
+                    <?php }?>
+                  </div> 
+               
+                  <div class="rate-user pl-2 rate"><?php echo $row['rate'];?></div>
+                </div>
+
+                <p class="feedback-paragraph"><?php echo $row['review'];?></p>
+              </div>
+              <?php }?>
+
+            </div>
+
+          </div>
+        </div>
+
         </div>
       </div>
     </div>
@@ -463,4 +543,26 @@ chart.render();
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
 </body>
+<script>
+
+$(document).on('click','.rating-wrapper',function(){ 
+  $(".rating-wrapper").removeClass("active");
+  $(this).addClass("active");
+
+  
+
+    filterdata = $(this).attr("star");
+
+    if(filterdata== "0"){
+      $('.rate-feedback-wrapper').show();
+    }else{
+      $('.rate-feedback-wrapper').show();
+      $('.rate-feedback-wrapper').find('.rate:not(:contains("'+filterdata+'"))').parent().parent().hide();
+    }
+      //  $('.shops').children().children().find('.content-card-title:not(:contains("'+filterdata+'"))').parent().parent().parent().parent().addClass('d-none');
+ 
+
+});
+</script>
+
 </html>
