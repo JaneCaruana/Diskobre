@@ -597,7 +597,7 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
     </div>
   </div>
 
-  
+  <!-- DELETE -->
   <div id="deny-modal" class="modal deny">
     <div class="modal-overlay"></div>
     <div class="modal-box confirmation"><img src="images/x.svg" loading="lazy" alt="" class="close-icon">
@@ -616,6 +616,7 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
     </div>
   </div>
 
+  <!-- Approve -->
   <div id="approve-modal" class="modal approve">
     <div class="modal-overlay"></div>
     <div class="modal-box confirmation"><img src="images/x.svg" loading="lazy" alt="" class="close-icon">
@@ -633,6 +634,11 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
       </div>
     </div>
   </div>
+
+
+
+
+
   <div id="estab-dissaprove-modal" class="modal estab-dissaprove">
     <div class="modal-overlay"></div>
     <div class="modal-box confirmation"><img src="images/x.svg" loading="lazy" alt="" class="close-icon">

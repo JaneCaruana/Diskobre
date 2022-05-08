@@ -316,7 +316,8 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                     <div class="col-title">Action</div>
                   </div>
                 </div>
-               <?php mysqli_select_db($link, "diskobre");
+               <?php 
+               mysqli_select_db($link, "diskobre");
                           $statusNum = 1;
                           $user = mysqli_query($link, "SELECT * from establishment JOIN user ON establishment.user_fk = user.user_id where user.user_type = '2' AND status='{$statusNum}'");
                           if(mysqli_num_rows($user) > 0){
