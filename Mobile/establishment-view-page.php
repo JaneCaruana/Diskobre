@@ -20,6 +20,7 @@
 </head>
 
 <?php
+$stat = 'Closed';
 session_start();
   $link = mysqli_connect('localhost','root','');
   mysqli_select_db($link,"diskobre");
@@ -37,6 +38,7 @@ session_start();
       $address = $s['address'];
       $description = $s['description'];
       $userFK = $s['user_fk'];
+      $status = $s['status'];
     }
   }
 
@@ -69,7 +71,14 @@ session_start();
         <div class="estab-img-more"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"></div>
       </div>
       <div class="estab-detials">
-        <h1 class="estab-name-large"><?php echo($estabName); ?></h1>
+        <h1 class="estab-name-large"><?php echo($estabName); ?>
+        <?php   //if approve show badge
+                if($status == 2) { ?>
+                  <img src="images/codicon_verified-filled.svg" loading="lazy" id="w-node-_2f90dcc5-9f89-1247-286a-1e76768b8731-2e3620ab" alt="" class="pp-mssgs owner-verify">
+
+               <?php }
+              
+              ?></h1>
         <div class="block-h-weighted pl-0 border-bottom">
           <div class="weight-50 pl-1 border-right content-vbetween">
             <div class="text-style-2"><?php echo($gotCategory); ?></div>
@@ -104,11 +113,13 @@ session_start();
          
           <div class="weight-50 pl-1">
             <p class="text-style-1">700 m   <span class="spe-char">|  8 min<br><br><?php echo($address) ?>
-            <span class="text-blue">Open</span>
+            <span class="text-blue"><?php echo ($stat) ?></span>
             <?php 
                $days = mysqli_query($link, "SELECT * FROM operatingtime WHERE Establishmentid_fk='{$estabId}'");
 
-              
+               
+               
+
                if(mysqli_num_rows($days) > 0){
 
                  while($s = mysqli_fetch_array($days)){
@@ -118,28 +129,39 @@ session_start();
                    
                     if( $s['Day'] == '0') { ?>
                         
-                      <p>Monday: <?php  echo($start.'-'.$end) ?></p>
+                      <p>Sunday: <?php  echo($start.'-'.$end) ?></p>
                    <?php }  if( $s['Day'] == '1') { ?>
                         
-                        <p>Tuesday: <?php  echo($start.'-'.$end) ?> </p>
+                        <p>Monday: <?php  echo($start.'-'.$end) ?> </p>
                      <?php }  if( $s['Day'] == '2') { ?>
                         
-                        <p>Wednesday:<?php  echo($start.'-'.$end) ?></p>
+                        <p>Tuesday:<?php  echo($start.'-'.$end) ?></p>
                     <?php }  if( $s['Day'] == '3') { ?>
                         
-                    <p>Thursday: <?php  echo($start.'-'.$end) ?></p>
+                    <p>Wednesday: <?php  echo($start.'-'.$end) ?></p>
                     <?php }  if( $s['Day'] == '4') { ?>
                         
-                        <p>Friday: <?php  echo($start.'-'.$end) ?></p>
+                        <p>Thursday: <?php  echo($start.'-'.$end) ?></p>
                     <?php }  if( $s['Day'] == '5') { ?>
                         
-                      <p>Saturday: <?php  echo($start.'-'.$end) ?></p>
+                      <p>Friday: <?php  echo($start.'-'.$end) ?></p>
                       <?php }  if( $s['Day'] == '6') { ?>
                         
-                        <p>Sunday: <?php  echo($start.'-'.$end) ?></p>
+                        <p>Saturday: <?php  echo($start.'-'.$end) ?></p>
                       
                  <?php }      
                 }
+                // get current time object
+               $timestamp = time();
+               //$currentTime = (new DateTime())->setTimestamp($timestamp);
+                date_default_timezone_set('Asia/Kolkata');
+                $currentTime = date('H:i');
+
+                
+                if (($start <= $currentTime) && ($currentTime <= $end)) {
+                  $stat = 'Open';
+                  
+              }
 
               }
              
