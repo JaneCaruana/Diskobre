@@ -86,6 +86,10 @@ if(isset($_POST['approve'])) {
   if($_FILES["business_permit-img2"]["error"] == 0){
     permit_upload2();
   } 
+//featured image
+  if($_FILES["estab-featured-img"]["error"] == 0){
+    featured_upload();
+  } 
 
   // ? consult with dan
    $updateUser = mysqli_query($link,"UPDATE user SET fname='$fname', middle='$middle', lname='$lname', username='$username' WHERE user_id='{$userId}'");
@@ -129,6 +133,8 @@ if(isset($_POST['submitReceipt'])){
  }
 //end of permit_upload1 function
 
+
+
 function permit_upload2(){
 
   $estabId = $_GET['estab_id'];
@@ -149,7 +155,7 @@ function permit_upload2(){
   }
 
 }
-
+//upload receipt
 function upload_receipt(){
   $estabId = $_GET['estab_id'];
 
@@ -171,6 +177,32 @@ function upload_receipt(){
   }
 
 }
+
+//featured image
+function featured_upload(){
+
+  $estabId = $_GET['estab_id'];
+
+  $target_dir = "../uploads/";
+  $target_file3 = $target_dir .basename($_FILES["estab-featured-img"]["name"]);
+
+  $imageFileType3 = strtolower(pathinfo($target_file3,PATHINFO_EXTENSION));
+
+  $establishmentName = $_POST['establishmentName'];
+  $imagename3 = $estabId.$establishmentName."featuredimage.".$imageFileType3;
+  $filename3 = $target_dir.$imagename3;
+
+  if (move_uploaded_file($_FILES["estab-featured-img"]["tmp_name"],$filename3)) {
+    $link = mysqli_connect('localhost','root','');
+    mysqli_select_db($link,"diskobre");
+    mysqli_query($link,"INSERT INTO `estab_image`( `estab_id_fk`, `image`, `image_type`) VALUES ('$estabId','$imagename3','6')");
+    
+ 
+  }
+
+ }
+
+
 
 
 ?>
@@ -284,8 +316,13 @@ function upload_receipt(){
                     <label for="Username-2" class="form-label">Featured Image</label>
                     <p class="paragraph accnt-p">Image to be uploaded will set as featured photo of the establishment.</p>
                 <div class="text-field-2">
-                  <div class="w-embed"><input type="file" name="estab-featured-img" multiple=""></div>
-                </div><label for="Username-2" class="form-label">Business Permit</label>
+                  <!--upload featured image -->
+                  <div class="w-embed"><input type="file" name="estab-featured-img" multiple></div>
+                  
+                </div>
+                
+                <!--upload business permit -->
+                <label for="Username-2" class="form-label">Business Permit</label>
                 <p class="paragraph accnt-p">Must upload 2 permits for verification.</p>
 
                 <div class="text-field-2">
@@ -331,5 +368,8 @@ function upload_receipt(){
 
   }
   }
+</script>
+<script>
+ 
 </script>
 </html>

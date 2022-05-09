@@ -65,16 +65,31 @@ session_start();
       <a href="home.php" class="w-inline-block"><img src="images/Frame-121.svg" loading="lazy" alt=""></a>
       <a href="#" class="w-inline-block"><img src="images/Frame-122.svg" loading="lazy" alt=""></a>
     </div>
+    <!--feature image-->
     <div class="box relative pt-2">
+    <?php 
+          $conn = new mysqli("localhost","root","","diskobre");
+          // image type 6 is featured image
+          $sql = "SELECT * FROM `estab_image` WHERE image_type = 6 && estab_id_fk = '$estabId' LIMIT 2";
+          $result = $conn->query($sql);
+      ?>
+               
       <div class="bg-card-white"></div>
-      <div class="estab-featured-img"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="estab-image">
-        <div class="estab-img-more"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"><img src="images/unsplash_nMyM7fxpokE.png" loading="lazy" alt="" class="image-7"></div>
+      <?php  
+            if ($result->num_rows > 0) {
+              while($data = $result->fetch_assoc()){ 
+                      ?>
+      <div class="estab-featured-img"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="estab-image" onerror="this.src='../uploads/no-image.png';">
+        <div class="estab-img-more"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"></div>
+        <?php }}else{?>
       </div>
+      <?php }?>
+      <!--end featured image -->
       <div class="estab-detials">
         <h1 class="estab-name-large"><?php echo($estabName); ?>
         <?php   //if approve show badge
                 if($status == 2) { ?>
-                  <img src="images/codicon_verified-filled.svg" loading="lazy" id="w-node-_2f90dcc5-9f89-1247-286a-1e76768b8731-2e3620ab" alt="" class="pp-mssgs owner-verify">
+                  <img src="images/codicon_verified-filled.svg" loading="lazy" id="w-node-_2f90dcc5-9f89-1247-286a-1e76768b8731-2e3620ab" alt="" class="">
 
                <?php }
               
