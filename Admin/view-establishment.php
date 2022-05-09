@@ -295,7 +295,7 @@ else {
                     <input disabled   value= "<?php echo($estab_email) ?>" name="email-establish"  type="email" class="text-field estab-view w-input" maxlength="256"  data-name="estab contact" placeholder="johnDoe@gmail.com" id="estab-contact" required="true">
                   <label for="estab-" class="h4-estab-view" >Business Permit Image</label>
 
-                    <!-- imgs lagay mo dito boss dave-->
+                    <!-- imgs lagay mo dito boss-->
                   <div class="estab-view flex-v">
                        
                       <?php 
