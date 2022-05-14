@@ -53,7 +53,7 @@ if(isset($_GET['catId'])) $categoryId = $_GET['catId'];
     <nav class="navbar px-2 py-1">
       <a href="home.php" class="nav-item w-inline-block"><img src="images/home-line-1.svg" loading="lazy" alt="" class="image-2"></a>
       <a href="navigation.php" aria-current="page" class="nav-item w-inline-block selected-nav"><img src="images/navigation-1.svg" loading="lazy" alt="" class="image-3"></a>
-      <a href="community-chat.php" class="nav-item w-inline-block"><img src="images/message.svg" loading="lazy" alt="" class="image-4"></a>
+      <!--<a href="community-chat.php" class="nav-item w-inline-block"><img src="images/message.svg" loading="lazy" alt="" class="image-4"></a> -->
       <a href="profile-settings.php" class="nav-item w-inline-block"><img src="images/user-settings.svg" loading="lazy" alt="" class="image-5"></a>
     </nav>
 

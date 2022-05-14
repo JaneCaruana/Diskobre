@@ -115,18 +115,47 @@ if(isset($_GET["logout"])) {
   //  print_r ($visitStats[0]);
   //  print_r ($visitStats[1]);
 
+  
+
+$qSelectSub = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = {$userId}");
+if(mysqli_num_rows($qSelectSub) > 0){
+  while($subscription = mysqli_fetch_array($qSelectSub)){
+    if(isset($subscription['start_at']) && isset($subscription['expire_at'])){
+      $start_at = $subscription['start_at'];
+      $expire_at = $subscription['expire_at'];
+      $current_date = date("Y-m-d");
+  
+      $date1 = date_create($expire_at);
+      $date2 = date_create($current_date);
+      $diff = date_diff($date1,$date2);
+      // echo $diff->format("%R%a");
+      if(number_format($diff->format("%R%a")) > 0){
+         $echoSub =  "Expired Subscription";
+        $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'inactive' WHERE user_id_fk = {$userId}");
+      }else{
+        $echoSub= "Active Subscription";
+        $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'active' WHERE user_id_fk = {$userId}");
+      }
+
+    }
+  }
+  // echo $echoSub;
+}else{
+  // echo "No Subscription";
+}
 
   $subscription = mysqli_query($link, "SELECT status  from subscription WHERE user_id_fk='{$userId}'");
 
-  if(mysqli_num_rows($subscription) > 0){
+  if(mysqli_num_rows($subscription) > 0) {
     while($s = mysqli_fetch_array($subscription)) {
-      $foundSub  = "found";
-        
-    }}
-    else {
-      $foundSub = "notFound";
-      
+      if(strtolower($s['status']) == 'active')
+        $foundSub  = "found";
+      else 
+        $foundSub = "notFound";
     }
+  } else {
+    $foundSub = "notFound";
+  }
 
   
   
@@ -190,9 +219,9 @@ if(isset($_GET["logout"])) {
       <a href="dashboard.php" aria-current="page" class="nav-item selected-nav w-inline-block w--current"><img src="images/Group-416.svg" loading="lazy" alt="">
         <div class="nav-text selected">Overview</div>
       </a>
-      <a href="messages.php" class="nav-item w-inline-block"><img src="images/mail-line.svg" loading="lazy" alt="">
+      <!--<a href="messages.php" class="nav-item w-inline-block"><img src="images/mail-line.svg" loading="lazy" alt="">
         <div class="nav-text">Messages</div>
-      </a>
+      </a>-->
       <a href="settings.php?estab_id=<?php echo($estabId);?>" class="nav-item w-inline-block"><img src="images/user-settings-line.svg" loading="lazy" alt="">
         <div class="nav-text">Settings</div>
       </a>
@@ -246,16 +275,16 @@ if(isset($_GET["logout"])) {
                 </div>
             </div>
           </div>
-          <div class="content-vcenter">
+          <!--<div class="content-vcenter">
             <div class="custome-date"><img src="images/Frame-94.svg" loading="lazy" alt="">
               <div class="cus-date-text">Custom Date</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="grid">
           <?php if($foundSub == "notFound") { 
 
-              $blur  = "0.3";
+              $blur  = "0.1";
            }
             else {
               $blur  = "1";

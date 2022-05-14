@@ -134,7 +134,7 @@
     <br>
 
     <div style="width: 100%;height: auto;display: block;text-align: center;">
-        <span style="color: #313035;font-size: 0.8rem;line-height: 0;font-weight: regular;">Don't have an account?<a href="registration.php"
+    <span style="color: #313035;font-size: 0.8rem;line-height: 0;font-weight: regular;">Don't have an account?<a href="registration.php"
                     style="color: #1B9EC3;"><u>Register now!</u></a></p>
         </span>
     </div>

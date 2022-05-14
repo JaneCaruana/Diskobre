@@ -105,10 +105,11 @@ $allDataOwner = $dataOwner['allEstablishOwner'];
               <div class="total-num"><?php echo($allDataOwner)?></div>
             </div>
           </div>
+          <!-- Custom Date
           <div class="content-vcenter">
             <div class="custome-date"><img src="images/Frame-94.svg" loading="lazy" alt="">
               <div class="cus-date-text">Custom Date</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="box large">

@@ -31,12 +31,12 @@
       </div>
     </div>
     <div class="box">
-      <div class="text-style-3 mb-1 ml-1">How to find places nearby you</div>
+      <div class="text-style-3 mb-1 ml-1">How to find essential establishments</div>
       <ol role="list" class="help-list">
         <li class="help-item">Type the place or tap category you are looking for like hotels/restaurants, corporates, banks, etc.</li>
         <li class="help-item">You will get the results list in couple of seconds</li>
         <li class="help-item">To get details of place click on any of the place from the list.</li>
-        <li class="help-item">You can message the place that you are looking for by just clicking <a href="#" class="text-link">message now</a>.</li>
+        
         <li>To get the direction to the place just click <a href="#" class="text-link">Get Direction</a>
         </li>
       </ol>

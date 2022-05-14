@@ -70,7 +70,7 @@ session_start();
     <?php 
           $conn = new mysqli("localhost","root","","diskobre");
           // image type 6 is featured image
-          $sql = "SELECT * FROM `estab_image` WHERE image_type = 6 && estab_id_fk = '$estabId' LIMIT 2";
+          $sql = "SELECT * FROM `estab_image` WHERE image_type = 6 && estab_id_fk = '$estabId' LIMIT 1";
           $result = $conn->query($sql);
       ?>
                
@@ -80,7 +80,7 @@ session_start();
               while($data = $result->fetch_assoc()){ 
                       ?>
       <div class="estab-featured-img"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="estab-image" onerror="this.src='../uploads/no-image.png';">
-        <div class="estab-img-more"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"><img src="../uploads/<?php echo $data['image']?>" loading="lazy" alt="" class="image-7"></div>
+      
         <?php }}else{?>
       </div>
       <?php }?>
@@ -127,56 +127,174 @@ session_start();
           </div>
          
           <div class="weight-50 pl-1">
-            <p class="text-style-1">700 m   <span class="spe-char">|  8 min<br><br><?php echo($address) ?>
-            <span class="text-blue"><?php echo ($stat) ?></span>
+            <p class="text-style-1">   <span class="spe-char"><br><br><?php echo($address) ?>
             <?php 
                $days = mysqli_query($link, "SELECT * FROM operatingtime WHERE Establishmentid_fk='{$estabId}'");
 
                
                
-
+              
                if(mysqli_num_rows($days) > 0){
 
                  while($s = mysqli_fetch_array($days)){
+                  date_default_timezone_set('Asia/Singapore');
+                    $start = $s['start'];
+                    $end = $s['end'];
                     
-                    $start = date('h:i A', strtotime($s['start']));
-                    $end = date('h:i A', strtotime($s['end']));
+
                    
-                    if( $s['Day'] == '0') { ?>
+                    if( ($s['Day'] == '0') && (date("l") == "Sunday")) {
+                      $date_raw = date_create($end);
+                       date_sub($date_raw, date_interval_create_from_date_string("1 hour"));
+                       $date_sub = date_format($date_raw, "H:i:s");
+                       if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub >= date("H:i:s")) {
+                        ?>
+                        <span class="text-blue">Open</span>
+                        <script>console.log("open <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub <= date("H:i:s")) {
+                        ?><span class="text-blue">About to close</span>
+                        <script>console.log("about to close <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else{
+                        ?>
+                        <span class="text-blue">Closed</span>
+                        <script>console.log("close <?php echo $date_sub; ?>")</script><?php
+                       } ?>
+                      <p><?php echo $start . " " . $end  ?></p>
+                   <?php }
+                   else if( ($s['Day'] == '1') && (date("l") == "Monday")) {
+                    $date_raw = date_create($end);
+                    date_sub($date_raw, date_interval_create_from_date_string("1 hour"));
+                    $date_sub = date_format($date_raw, "H:i:s");
+                    if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub >= date("H:i:s")) {
+                     ?>
+                     <span class="text-blue">Open</span>
+                     <script>console.log("open <?php echo $date_sub; ?>")</script><?php
+                    }
+                    else if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub <= date("H:i:s")) {
+                     ?><span class="text-blue">About to close</span>
+                     <script>console.log("about to close <?php echo $date_sub; ?>")</script><?php
+                    }
+                    else{
+                     ?>
+                     <span class="text-blue">Closed</span>
+                     <script>console.log("close <?php echo $date_sub; ?>")</script><?php
+                    } ?>
                         
-                      <p>Sunday: <?php  echo($start.'-'.$end) ?></p>
-                   <?php }  if( $s['Day'] == '1') { ?>
+                        <p>Monday: <?php echo $start . " " . $end  ?>p>
+                     <?php }
+                     else if( ($s['Day'] == '2') && (date("l") == "Tuesday")) {
+                       $date_raw = date_create($end);
+                       date_sub($date_raw, date_interval_create_from_date_string("1 hour"));
+                       $date_sub = date_format($date_raw, "H:i:s");
+                       if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub >= date("H:i:s")) {
+                        ?>
+                        <span class="text-blue">Open</span>
+                        <script>console.log("open <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub <= date("H:i:s")) {
+                        ?><span class="text-blue">About to close</span>
+                        <script>console.log("about to close <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else{
+                        ?>
+                        <span class="text-blue">Closed</span>
+                        <script>console.log("close <?php echo $date_sub; ?>")</script><?php
+                       }
+                       ?>
                         
-                        <p>Monday: <?php  echo($start.'-'.$end) ?> </p>
-                     <?php }  if( $s['Day'] == '2') { ?>
+                        <p><?php echo $start . " " . $end  ?></p>
+                    <?php }
+                    else if( ($s['Day'] == '3') && (date("l") == "Wednesday")) {
+                      $date_raw = date_create($end);
+                       date_sub($date_raw, date_interval_create_from_date_string("1 hour"));
+                       $date_sub = date_format($date_raw, "H:i:s");
+                       if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub >= date("H:i:s")) {
+                        ?>
+                        <span class="text-blue">Open</span>
+                        <script>console.log("open <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub <= date("H:i:s")) {
+                        ?><span class="text-blue">About to close</span>
+                        <script>console.log("about to close <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else{
+                        ?>
+                        <span class="text-blue">Closed</span>
+                        <script>console.log("close <?php echo $date_sub; ?>")</script><?php
+                       }
+                        ?>
                         
-                        <p>Tuesday:<?php  echo($start.'-'.$end) ?></p>
-                    <?php }  if( $s['Day'] == '3') { ?>
+                    <p><?php echo $start . " " . $end  ?></p>
+                    <?php }
+                    else if( ($s['Day'] == '4') && (date("l") == "Thursday")) {
+                      $date_raw = date_create($end);
+                       date_sub($date_raw, date_interval_create_from_date_string("1 hour"));
+                       $date_sub = date_format($date_raw, "H:i:s");
+                       if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub >= date("H:i:s")) {
+                        ?>
+                        <span class="text-blue">Open</span>
+                        <script>console.log("open <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub <= date("H:i:s")) {
+                        ?><span class="text-blue">About to close</span>
+                        <script>console.log("about to close <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else{
+                        ?>
+                        <span class="text-blue">Closed</span>
+                        <script>console.log("close <?php echo $date_sub; ?>")</script><?php
+                       } ?>
                         
-                    <p>Wednesday: <?php  echo($start.'-'.$end) ?></p>
-                    <?php }  if( $s['Day'] == '4') { ?>
+                        <p><?php echo $start . " " . $end  ?></p>
+                    <?php }
+                    else if( ($s['Day'] == '5') && (date("l") == "Friday")) {
+                      $date_raw = date_create($end);
+                       date_sub($date_raw, date_interval_create_from_date_string("1 hour"));
+                       $date_sub = date_format($date_raw, "H:i:s");
+                       if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub >= date("H:i:s")) {
+                        ?>
+                        <span class="text-blue">Open</span>
+                        <script>console.log("open <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub <= date("H:i:s")) {
+                        ?><span class="text-blue">About to close</span>
+                        <script>console.log("about to close <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else{
+                        ?>
+                        <span class="text-blue">Closed</span>
+                        <script>console.log("close <?php echo $date_sub; ?>")</script><?php
+                       } ?>
                         
-                        <p>Thursday: <?php  echo($start.'-'.$end) ?></p>
-                    <?php }  if( $s['Day'] == '5') { ?>
+                      <p><?php echo $start . " " . $end  ?></p>
+                      <?php }
+                      else if( ($s['Day'] == '6') && (date("l") == "Saturday")) {
+                        $date_raw = date_create($end);
+                       date_sub($date_raw, date_interval_create_from_date_string("1 hour"));
+                       $date_sub = date_format($date_raw, "H:i:s");
+                       if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub >= date("H:i:s")) {
+                        ?>
+                        <span class="text-blue">Open</span>
+                        <script>console.log("open <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else if ($start <= date("H:i:s") && $end >= date("H:i:s") && $date_sub <= date("H:i:s")) {
+                        ?><span class="text-blue">About to close</span>
+                        <script>console.log("about to close <?php echo $date_sub; ?>")</script><?php
+                       }
+                       else{
+                        ?>
+                        <span class="text-blue">Closed</span>
+                        <script>console.log("close <?php echo $date_sub; ?>")</script><?php
+                       } ?>
                         
-                      <p>Friday: <?php  echo($start.'-'.$end) ?></p>
-                      <?php }  if( $s['Day'] == '6') { ?>
-                        
-                        <p>Saturday: <?php  echo($start.'-'.$end) ?></p>
+                        <p><?php echo $start . " " . $end  ?></p>
                       
                  <?php }      
                 }
-                // get current time object
-               $timestamp = time();
-               //$currentTime = (new DateTime())->setTimestamp($timestamp);
-                date_default_timezone_set('Asia/Kolkata');
-                $currentTime = date('H:i');
-
+                ?><script>console.log(`<?php echo date("H:i:s A")?>`)</script><?php
                 
-                if (($start <= $currentTime) && ($currentTime <= $end)) {
-                  $stat = 'Open';
-                  
-              }
 
               }
              
@@ -203,18 +321,18 @@ session_start();
       </div>
       <div class="btn-box border-bottom pb-0">
         <!-- message button -->
-        <a href="#" class="mb-1 w-inline-block">
+        <!--<a href="#" class="mb-1 w-inline-block">
           <img src="images/Frame-130-2.svg" loading="lazy" width="131" height="40" alt="">
-        </a>
+        </a> -->
         <!-- navigation button -->
         <a href="start-navigation.php?estabId=<?= $estabId ?>" class="mb-1 w-inline-block">
           <img src="images/Frame-129.svg" loading="lazy" alt="">
         </a>
       </div>
       <div class="amenities-box border-bottom">
-        <div class="text-style-3 mb-1">Amenities</div>
+        <div class="text-style-3 mb-1">About</div>
         <div>
-          <div class="text-style-1">Accessibility</div>
+          <div class="text-style-1">Services</div>
           <ul role="list" class="w-list-unstyled">
             <li class="list-item"><img src="images/Group.svg" loading="lazy" alt="">
               <div class="text-style-1"><?php echo($description)?></div>
@@ -253,7 +371,7 @@ session_start();
 
           <div class="text-style-1">based on <span class="arial"><?php echo $rateresult['countRating']?></span> reviews</div>
         </div>
-        <div class="chart"></div>
+       
       </div>
       <div class="border-bottom">
         <div class="text-style-3 mb-1">Rating and review</div>

@@ -3,7 +3,7 @@
 <html data-wf-page="6249fad5186ec72fe43e051b" data-wf-site="62165137ca1ed84e0065bb2c">
 <head>
   <meta charset="utf-8">
-  <title>Recently VIsited</title>
+  <title>Notifications</title>
   <meta content="Recently VIsited" property="og:title">
   <meta content="Recently VIsited" property="twitter:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -39,7 +39,7 @@ $userId = $_SESSION["userId"];
     <div class="head">
       <a href="profile-settings.php" class="w-inline-block"><img src="images/Frame-121.svg" loading="lazy" alt=""></a>
       <div class="convo-title">
-        <h1 class="tittle mt-0">Recently Visited</h1>
+        <h1 class="tittle mt-0">Notifications</h1>
       </div>
     </div>
     <div class="box">
@@ -50,11 +50,11 @@ $userId = $_SESSION["userId"];
     while($notif = mysqli_fetch_array($result)):
      if($notif[2]== 2)
      {
-       $getStatus= "Approve";
+       $getStatus= "Your contribution has been approved.";
      }
      if($notif[2]== 3)
      {
-       $getStatus= "Denied";
+       $getStatus= "Sorry,  your contribution has  been disapproved its either the information was inaccurate or the establishment already exist.";
      }
 
 ?>

@@ -8,5 +8,5 @@
     $delete_query = "DELETE from user where user_id =".$userId;
     $run_delete_query = mysqli_query($link, $delete_query);
 
-    echo 'Successfully Delete Estalishment Detail.';
+    echo 'Successfully Delete Establishment Detail.';
 ?>

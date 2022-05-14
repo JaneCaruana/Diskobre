@@ -111,8 +111,8 @@ if(isset($_POST['submit'])) {
 
       
       $sun= $_POST['sun'];
-      $start = date('h:i A', strtotime($sun[0]));
-      $end = date('h:i A', strtotime($sun[1]));
+      $start = date('H:i:s A', strtotime($sun[0]));
+      $end = date('H:i:s A', strtotime($sun[1]));
     
       mysqli_query($link, "
     insert into operatingtime(Establishmentid_fk,Day,start,end) values(
@@ -127,8 +127,8 @@ if(isset($_POST['submit'])) {
      if($eachDay == 'monday') {
       $mon= $_POST['mon'];
      
-      $start = date('h:i A', strtotime($mon[0]));
-      $end = date('h:i A', strtotime($mon[1]));
+      $start = date('H:i:s A', strtotime($mon[0]));
+      $end = date('H:i:s A', strtotime($mon[1]));
       
       mysqli_query($link, "
       insert into operatingtime(Establishmentid_fk,Day,start,end) values(
@@ -141,8 +141,8 @@ if(isset($_POST['submit'])) {
      if($eachDay == 'tuesday') {
       $mon= $_POST['tues'];
      
-      $start = date('h:i A', strtotime($mon[0]));
-      $end = date('h:i A', strtotime($mon[1]));
+      $start = date('H:i:s A', strtotime($mon[0]));
+      $end = date('H:i:s A', strtotime($mon[1]));
 
       mysqli_query($link, "
       insert into operatingtime(Establishmentid_fk,Day,start,end) values(
@@ -155,8 +155,8 @@ if(isset($_POST['submit'])) {
      if($eachDay == 'wednesday') {
       $mon= $_POST['wed'];
      
-      $start = date('h:i A', strtotime($mon[0]));
-      $end = date('h:i A', strtotime($mon[1]));
+      $start = date('H:i:s A', strtotime($mon[0]));
+      $end = date('H:i:s A', strtotime($mon[1]));
 
       mysqli_query($link, "
       insert into operatingtime(Establishmentid_fk,Day,start,end) values(
@@ -169,8 +169,8 @@ if(isset($_POST['submit'])) {
      if($eachDay == 'thursday') {
       $mon = $_POST['thurs'];
      
-      $start = date('h:i A', strtotime($mon[0]));
-      $end = date('h:i A', strtotime($mon[1]));
+      $start = date('H:i:s A', strtotime($mon[0]));
+      $end = date('H:i:s A', strtotime($mon[1]));
 
       mysqli_query($link, "
       insert into operatingtime(Establishmentid_fk,Day,start,end) values(
@@ -183,8 +183,8 @@ if(isset($_POST['submit'])) {
      if($eachDay == 'friday') {
       $mon= $_POST['fri'];
      
-      $start = date('h:i A', strtotime($mon[0]));
-      $end = date('h:i A', strtotime($mon[1]));
+      $start = date('H:i:s A', strtotime($mon[0]));
+      $end = date('H:i:s A', strtotime($mon[1]));
       mysqli_query($link, "
       insert into operatingtime(Establishmentid_fk,Day,start,end) values(
         '".$estabId."',
@@ -197,8 +197,8 @@ if(isset($_POST['submit'])) {
      if($eachDay == 'saturday') {
       $mon= $_POST['sat'];
 
-      $start = date('h:i A', strtotime($mon[0]));
-      $end = date('h:i A', strtotime($mon[1]));
+      $start = date('H:i:s A', strtotime($mon[0]));
+      $end = date('H:i:s A', strtotime($mon[1]));
       
       mysqli_query($link, "
       insert into operatingtime(Establishmentid_fk,Day,start,end) values(
@@ -218,9 +218,9 @@ if(isset($_POST['submit'])) {
       <a href="dashboard.php" class="nav-item w-inline-block"><img src="images/Group.png" loading="lazy" alt="">
         <div class="nav-text">Overview</div>
       </a>
-      <a href="messages.php" class="nav-item w-inline-block"><img src="images/mail-line.svg" loading="lazy" alt="">
+      <!--<a href="messages.php" class="nav-item w-inline-block"><img src="images/mail-line.svg" loading="lazy" alt="">
         <div class="nav-text">Messages</div>
-      </a>
+      </a> -->
       <a href="#" class="nav-item selected-nav w-inline-block"><img src="images/user-settings-line.svg" loading="lazy" alt="">
         <div class="nav-text selected">Settings</div>
       </a>

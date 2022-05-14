@@ -161,6 +161,9 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                   <div id="w-node-_2213fe03-9abc-2df6-6630-a5290ec31a6d-48df79eb" class="cell-holder">
                     <div class="col-title">Account Status</div>
                   </div>
+                  <!-- <div id="w-node-_6ac075bc-e5ad-f8c8-2965-f79a3da21c21-48df79eb" class="cell-holder">
+                    <div class="col-title">Subs Status</div>
+                  </div> -->
                   <div id="w-node-_0f0b999b-7d37-2e09-d072-ac6c0b84632b-48df79eb" class="cell-holder">
                     <div class="col-title">Action</div>
                   </div>
@@ -214,9 +217,22 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                                 <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
                                   <div class="cell-data"><?php echo $status; ?></div>
                                 </div>
-                                <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
+                                <!-- sub status -->
+                                <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
+                                  <div class="cell-data"><?php 
+                                    $qSelect = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = '{$s['user_fk']}'");
+                                    if(mysqli_num_rows($qSelect) > 0){
+                                      while($sub = mysqli_fetch_array($qSelect)){
+                                          $currentSub = $sub['status'];
+                                      }
+                                      echo $currentSub;
+                                    }else{
+                                      echo 'Inactive';
+                                    }
+                                  ?></div>
+                                <!-- <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
                                   <div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div>
-                                </div>
+                                </div> -->
                                 <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
                                     <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status);?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                                     <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
@@ -271,8 +287,23 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                                   <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
                                     <div class="cell-data"><?php echo $status; ?></div>
                                   </div>
-                                  <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
+                                  <!-- account status -->
+                                  <!-- <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
                                     <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
+                                  </div> -->
+                                  <!-- sub status -->
+                                  <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
+                                    <div class="cell-data"><?php 
+                                      $qSelect = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = '{$s['user_fk']}'");
+                                      if(mysqli_num_rows($qSelect) > 0){
+                                        while($sub = mysqli_fetch_array($qSelect)){
+                                           $currentSub = $sub['status'];
+                                        }
+                                        echo $currentSub;
+                                      }else{
+                                        echo 'Inactive';
+                                      }
+                                    ?></div>
                                   </div>
                                   <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
                                     <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status);?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
@@ -361,8 +392,22 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                                   <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
                                     <div class="cell-data"><?php echo $status; ?></div>
                                   </div>
-                                  <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
+                                  <!-- <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
                                     <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
+                                  </div> -->
+                                  <!-- sub status -->
+                                  <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
+                                    <div class="cell-data"><?php 
+                                      $qSelect = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = '{$s['user_fk']}'");
+                                      if(mysqli_num_rows($qSelect) > 0){
+                                        while($sub = mysqli_fetch_array($qSelect)){
+                                           $currentSub = $sub['status'];
+                                        }
+                                        echo $currentSub;
+                                      }else{
+                                        echo 'Inactive';
+                                      }
+                                    ?></div>
                                   </div>
                                   <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
                                     <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status);?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
@@ -461,9 +506,23 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                           <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
                             <div class="cell-data"><?php echo $status; ?></div>
                           </div>
-                          <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
+                          <!-- <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
                             <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
-                          </div>
+                          </div> -->
+                                  <!-- sub status -->
+                                  <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
+                                    <div class="cell-data"><?php 
+                                      $qSelect = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = '{$s['user_fk']}'");
+                                      if(mysqli_num_rows($qSelect) > 0){
+                                        while($sub = mysqli_fetch_array($qSelect)){
+                                           $currentSub = $sub['status'];
+                                        }
+                                        echo $currentSub;
+                                      }else{
+                                        echo 'Inactive';
+                                      }
+                                    ?></div>
+                                  </div>
                           <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
                             <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status) ?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                             <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
@@ -561,9 +620,23 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
                           <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
                             <div class="cell-data"><?php echo $status; ?></div>
                           </div>
-                          <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
+                          <!-- <div id="w-node-_52b6058c-9090-5212-60aa-9c6e596c737a-48df79eb" class="cell-holder">
                             <div class="cell-data"><div class="cell-data"><?php if($status == "denied" || $status == "pending") {echo("inactive");} else {echo("active");} ?></div></div>
-                          </div>
+                          </div> -->
+                                  <!-- sub status -->
+                                  <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb3e-48df79eb" class="cell-holder">
+                                    <div class="cell-data"><?php 
+                                      $qSelect = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = '{$s['user_fk']}'");
+                                      if(mysqli_num_rows($qSelect) > 0){
+                                        while($sub = mysqli_fetch_array($qSelect)){
+                                           $currentSub = $sub['status'];
+                                        }
+                                        echo $currentSub;
+                                      }else{
+                                        echo 'Inactive';
+                                      }
+                                    ?></div>
+                                  </div>
                           <div id="w-node-_07237bdd-3fc1-a28d-53fb-d1319bdafb41-48df79eb" class="cell-holder">
                             <a href="view-establishment.php?estab_id=<?php echo $s['establishment_id'];?>&type=estab&status=<?php echo($status)?>"><img id="view-<?php echo($s['establishment_id']) ?>" loading="lazy" src="images/Group-418.svg" alt="" class="action-icon view-btn"></a>
                             <img onclick="" loading="lazy" src="images/Group-416_3.svg" alt="" class="action-icon deny-btn" id="deny-<?= $s['establishment_id'];?>">
@@ -597,7 +670,7 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
     </div>
   </div>
 
-  <!-- DELETE -->
+  
   <div id="deny-modal" class="modal deny">
     <div class="modal-overlay"></div>
     <div class="modal-box confirmation"><img src="images/x.svg" loading="lazy" alt="" class="close-icon">
@@ -616,7 +689,6 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
     </div>
   </div>
 
-  <!-- Approve -->
   <div id="approve-modal" class="modal approve">
     <div class="modal-overlay"></div>
     <div class="modal-box confirmation"><img src="images/x.svg" loading="lazy" alt="" class="close-icon">
@@ -634,11 +706,6 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
       </div>
     </div>
   </div>
-
-
-
-
-
   <div id="estab-dissaprove-modal" class="modal estab-dissaprove">
     <div class="modal-overlay"></div>
     <div class="modal-box confirmation"><img src="images/x.svg" loading="lazy" alt="" class="close-icon">
@@ -681,10 +748,11 @@ $totalDisapprove = $getDisapprove['totalDisapprove'];
               establishment_id: establishment_id_value
             },
             success: function(response) {
-              
+              console.log(response)
               location.reload();
             }
       });
+      
 
     })
   });

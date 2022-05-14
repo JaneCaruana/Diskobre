@@ -86,7 +86,7 @@ if(isset($_POST['approve'])) {
   if($_FILES["business_permit-img2"]["error"] == 0){
     permit_upload2();
   } 
-//featured image
+  //featured image
   if($_FILES["estab-featured-img"]["error"] == 0){
     featured_upload();
   } 
@@ -101,6 +101,12 @@ if(isset($_POST['approve'])) {
 
 if(isset($_POST['submitReceipt'])){
   upload_receipt();
+  
+    // submition of 
+    if(isset($_POST['subscriptionType'])){
+      $subType = $_POST['subscriptionType'];
+      mysqli_query($link, "INSERT INTO `subscription`( `user_id_fk`, `subscriptionType`, `status` ) VALUES ('$userId', '$subType',  'inactive')");
+    }
 }
 
 ?>
@@ -131,9 +137,7 @@ if(isset($_POST['submitReceipt'])){
   }
 
  }
-//end of permit_upload1 function
-
-
+//end of permit_upload2 function
 
 function permit_upload2(){
 
@@ -155,7 +159,7 @@ function permit_upload2(){
   }
 
 }
-//upload receipt
+
 function upload_receipt(){
   $estabId = $_GET['estab_id'];
 
@@ -202,7 +206,32 @@ function featured_upload(){
 
  }
 
+$qSelectSub = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = {$userId}");
+if(mysqli_num_rows($qSelectSub) > 0){
+  while($subscription = mysqli_fetch_array($qSelectSub)){
+    if(isset($subscription['start_at']) && isset($subscription['expire_at'])){
+      $start_at = $subscription['start_at'];
+      $expire_at = $subscription['expire_at'];
+      $current_date = date("Y-m-d");
+  
+      $date1 = date_create($expire_at);
+      $date2 = date_create($current_date);
+      $diff = date_diff($date1,$date2);
+      // echo $diff->format("%R%a");
+      if(number_format($diff->format("%R%a")) > 0){
+         $echoSub =  "Expired Subscription";
+        $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'inactive' WHERE user_id_fk = {$userId}");
+      }else{
+        $echoSub= "Active Subscription";
+        $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'active' WHERE user_id_fk = {$userId}");
+      }
 
+    }
+  }
+  // echo $echoSub;
+}else{
+  // echo "No Subscription";
+}
 
 
 ?>
@@ -215,9 +244,9 @@ function featured_upload(){
       <a href="dashboard.php" class="nav-item w-inline-block"><img src="images/Group.png" loading="lazy" alt="">
         <div class="nav-text">Overview</div>
       </a>
-      <a href="messages.php" class="nav-item w-inline-block"><img src="images/mail-line.svg" loading="lazy" alt="">
+      <!--<a href="messages.php" class="nav-item w-inline-block"><img src="images/mail-line.svg" loading="lazy" alt="">
         <div class="nav-text">Messages</div>
-      </a>
+      </a> -->
       <a href="#" class="nav-item selected-nav w-inline-block"><img src="images/user-settings-line.svg" loading="lazy" alt="">
         <div class="nav-text selected">Settings</div>
       </a>
@@ -248,44 +277,59 @@ function featured_upload(){
           <div class="weight-70 admn-right-panel">
           <div class="subcription-box">
               <div class="subs-headers">
-                <div class="actve-subs"><span class="text-span-3">Status:</span> INACTIVE</div>
+                <div class="actve-subs"><span class="text-span-3">Status:</span> <?php
+                  $qSelect = mysqli_query($link , "SELECT * FROM subscription WHERE user_id_fk = '{$userId}'");
+                  if(mysqli_num_rows($qSelect) > 0){
+                    while($sub = mysqli_fetch_array($qSelect )){
+                      if(strtolower($sub['status']) == 'active'){
+                        $subStat = 'ACTIVE';
+                      }else{
+                        $subStat =  'INACTIVE';
+                      }
+                    }
+                    echo $subStat;
+                  }else{  
+                    echo 'INACTIVE';
+                  }
+                ?></div>
               </div>
               <div class="subs-range-box">
                 <div class="subscription-divider">
-                  <div class="subs-box w-row">
+                  <!-- form -->
+                  <form class="subs-box w-row" method="POST" enctype="multipart/form-data">
+
+                    <!-- left content -->
                     <div class="subscribe-now w-col w-col-6">
                       <p class="paragraph-2" style="font-family: Arial;"><span class="text-span-4">Want to unlock the Dashboard Analytics?</span><br><br>Choose type of subscription. Just send your payment to [ <strong>Diskobre - 09205149329</strong> ] via Gcash only. After paying, kindly upload a screenshot of the receipt for proof of payment.</p>
-                      <div class="subscription-type">
-                        <h5 class="heading">Subscription Type: </h5>
-                        <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
-                          <div class="dropdown-toggle w-dropdown-toggle">
-                            <div class="w-icon-dropdown-toggle"></div>
-                            <div>Subscription Type</div>
-                          </div>
-                          <nav class="w-dropdown-list">
-                            <a href="#" class="w-dropdown-link">Link 1</a>
-                            <a href="#" class="w-dropdown-link">Link 3</a>
-                          </nav>
-                        </div>
+                      <div class="subscription-type" style="display: flex; ">
+
+                        <h5 class="heading" style="width: 100%; text-align: left;">Subscription Type: </h5>
+                        
+                        <select style="padding: 10px 20px; font-family: Arial; border-radius: 20px; font-size: 20px;" name="subscriptionType" id="subscriptionType">
+                          <option value="Php 49/Monthly">Php 49/Monthly</option>
+                          <option value="Php 441/Yearly">Php 441/Yearly</option>
+                        </select>
+
                       </div>
-                      <a href="#" class="subscribe-btn w-button">Subscribe Now!</a>
                     </div>
+
+                    <!-- right content -->
                     <div class="upload-receipt w-col w-col-6">
                       <div class="upload-box">
                         <h4 class="upload-text">Upload Receipt</h4>
                         <img src="" alt="" id="receipt-preview">
                         <div class="buttons flex-v">
                           <a class="upload-btn upload w-button" onclick="clickPaymentReceiptUpload()" >Upload Receipt</a>
-                            <form method="POST" enctype="multipart/form-data">
+                            <div>
                               <div class="span-text"><input type="file" id="paymentReceiptImage" name="paymentReceiptImage" onchange="imagePreview(event)" style="display:none"></div>
                               <!-- <a href="#" class="upload-btn w-button">Submit</a> -->
-                              <center><input type="submit" class="upload-btn w-button" value="Submit" name="submitReceipt"></center>
-                            </form>
+                              <center><input type="submit" class="upload-btn w-button subscribe-btn" value="Subscribe Now!" name="submitReceipt"></center>
+                            </div>
                         </div>
-                      </div>
-                      <br><br>
+                      </div> <br><br>
                     </div>
-                  </div>
+                    
+                  </form>
                 </div>
               </div>
 
@@ -315,16 +359,12 @@ function featured_upload(){
                     <input type="email" value="<?php echo($estab_email) ?>" name="email-establish" class="text-field-settings spe-char w-input" maxlength="256"  data-name="Email Address" placeholder="rosep_fuente@gmail.com" id="Email-Address" required="">
                     <label for="Username-2" class="form-label">Featured Image</label>
                     <p class="paragraph accnt-p">Image to be uploaded will set as featured photo of the establishment.</p>
+                    <!--upload featured image -->
                 <div class="text-field-2">
-                  <!--upload featured image -->
-                  <div class="w-embed"><input type="file" name="estab-featured-img" multiple></div>
-                  
-                </div>
-                
-                <!--upload business permit -->
-                <label for="Username-2" class="form-label">Business Permit</label>
+                  <div class="w-embed"><input type="file" name="estab-featured-img" multiple=""></div>
+                </div><label for="Username-2" class="form-label">Business Permit</label>
                 <p class="paragraph accnt-p">Must upload 2 permits for verification.</p>
-
+                  <!--upload business permit -->
                 <div class="text-field-2">
                   <div class="w-embed"><input type="file" name="business_permit-img1" multiple=""></div>
                 </div>
@@ -368,8 +408,5 @@ function featured_upload(){
 
   }
   }
-</script>
-<script>
- 
 </script>
 </html>

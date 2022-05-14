@@ -162,7 +162,7 @@ if(isset($_POST['register'])) {
     </form>
     <br>
     <div style="width: 100%;height: auto;display: block;text-align: center;">
-        <span style="color: #313035;font-size: 0.8rem;line-height: 0;font-weight: regular;">Already have an account?<a href="login.php"
+    <span style="color: #313035;font-size: 0.8rem;line-height: 0;font-weight: regular;">Already have an account?<a href="login.php"
                     style="color: #1B9EC3;"><u>Login</u></a></p>
         </span>
     </div>

@@ -35,7 +35,7 @@ header('Location: index.php');
     <nav class="navbar px-2 py-1">
       <a href="home.php" aria-current="page" class="nav-item w-inline-block selected-nav"><img src="images/home-line.svg" loading="lazy" alt="" class="image-2"></a>
       <a href="navigation.php" class="nav-item w-inline-block"><img src="images/navigation.svg" loading="lazy" alt="" class="image-3"></a>
-      <a href="community-chat.php" class="nav-item w-inline-block"><img src="images/message.svg" loading="lazy" alt="" class="image-4"></a>
+      <!--<a href="community-chat.php" class="nav-item w-inline-block"><img src="images/message.svg" loading="lazy" alt="" class="image-4"></a>-->
       <a href="profile-settings.php" class="nav-item w-inline-block"><img src="images/user-settings.svg" loading="lazy" alt="" class="image-5"></a>
     </nav>
     <div class="search-bar">
@@ -120,6 +120,8 @@ header('Location: index.php');
                                         <?php
                                       }
 
+                                      
+
                                       if($estabToLower == 'veterinary clinics'){
                                         ?>
                                           <a href="navigation.php?category=veterinary clinics&catId=10" class="cat-item w-inline-block"><img src="images/card_vet.svg" loading="lazy" alt=""></a>
@@ -148,13 +150,13 @@ header('Location: index.php');
                                         <?php
                                       }
 
-                                      if($estabToLower == 'gasoline station'){
+                                      if($estabToLower == 'gas station'){
                                         ?>
                                           <a href="navigation.php?category=gasoline station&catId=17" class="cat-item w-inline-block"><img src="images/card_gas_station.svg" loading="lazy" alt=""></a>
                                         <?php
                                       }
 
-                                      if($estabToLower == 'convinience store'){
+                                      if($estabToLower == 'convenience store'){
                                         ?>
                                           <a href="navigation.php?category=convinience store&catId=18" class="cat-item w-inline-block"><img src="images/card_convinience_store.svg" loading="lazy" alt=""></a>
                                         <?php

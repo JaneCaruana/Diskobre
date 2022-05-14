@@ -92,7 +92,7 @@ if(isset($_POST['register'])) {
             <input type="password" class="input-field w-input" maxlength="256" name="confirmPassword" data-name="password" placeholder="Password" id="password-2" name="password" required="">
           </div>
         
-          <input type="submit" value="Login" class="primary-button mt-2 w-button" name="register">
+          <input type="submit" value="Register" class="primary-button mt-2 w-button" name="register">
         </form>
       </div>
     </div>

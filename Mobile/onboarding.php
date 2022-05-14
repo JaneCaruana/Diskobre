@@ -82,9 +82,6 @@ var slide = 0;
 function next_onboarding_image() {
 
     if (slide == 0) {
-        document.getElementById("image_view").src = "assets/onboarding2.svg";
-        slide++;
-    } else if (slide == 1) {
         document.getElementById("image_view").src = "assets/onboarding3.svg";
         slide++;
         document.getElementById("next_btn").style.display = "none";

@@ -31,12 +31,10 @@ date_default_timezone_set("Asia/Manila");
 $type = $_GET['type'];
 
 if($type == 'estab') {
-  $urlRedirect = "establishment-management.php";
+  $urlRedirect = "contribution-management.php";
 
 }
-else {
-  $urlRedirect = "contribution-management.php";
-}
+
 
 
  $viewEstab = mysqli_query($link, "SELECT * from establishment where establishment_id='{$estabId}'");
@@ -51,6 +49,7 @@ else {
     $address = $s['address'];
     $estab_email = $s['estab_email'];
     $contact = $s['contact'];
+    $status = $s['status'];
   }
 }
 
@@ -99,9 +98,14 @@ if(isset($_POST['approve'])) {
   $updateEstab = mysqli_query($link,"UPDATE establishment SET  estab_email='$email',estab_name='$establishmentName', address='$address', description='$description',contact='$contact' WHERE user_fk='{$userId}'");
 
 
-  header("location: view-establishment.php?estab_id=".$estabId);
+  header("location: view-contribute-establishment.php?estab_id=".$estabId);
 
 }
+
+if(isset($_GET['status'])) {
+  $gotStatus = $_GET['status'];
+
+ }
 
 $today = date("Y-m-d");
 
@@ -149,105 +153,6 @@ else {
 
 }
 
-$ifActive = mysqli_query($link, "SELECT * from subscription where user_id_fk='{$userId}'");
-
-
-if(mysqli_num_rows($ifActive) > 0){
-  while($s = mysqli_fetch_array($ifActive)){
-    $subs_id  = $s['subs_id'];
-    $sub_user_id  = $s['user_id_fk'];
-    $start_at  = $s['start_at'];
-    $expire_at =  $s['expire_at'];
-    $status = $s['status'];
-    $subtype = $s['subscriptionType'];
-  }
-}
-else {
-  $status = "null";
-}
-if(isset($_POST['saveSub']) && isset($subs_id)){
-  $subStartDate = $_POST['startDate'];
-  $subEndDate = $_POST['endDate'];
-
-  //$subs_id 
-  mysqli_query($link, "UPDATE subscription SET start_at = '$subStartDate', expire_at = '$subEndDate', status='active' WHERE subs_id = '{$subs_id}'");
-}
-
-$ifActive = mysqli_query($link, "SELECT * from subscription where user_id_fk='{$userId}'");
-
-
-if(mysqli_num_rows($ifActive) > 0){
-  while($s = mysqli_fetch_array($ifActive)){
-    $subs_id  = $s['subs_id'];
-    $sub_user_id  = $s['user_id_fk'];
-    $start_at  = $s['start_at'];
-    $expire_at =  $s['expire_at'];
-    $status = $s['status'];
-    $subtype = $s['subscriptionType'];
-  }
-}
-else {
-  $status = "null";
-}
- 
-
- if(isset($_GET['status'])) {
-  $gotStatus = $_GET['status'];
-
- }
-
- 
- if(isset($sub_user_id )){
-  $qSelectSub = mysqli_query($link, "SELECT * FROM subscription WHERE user_id_fk = '{$sub_user_id}'");
- if(mysqli_num_rows($qSelectSub) > 0){
-   while($subscription = mysqli_fetch_array($qSelectSub)){
-     if(isset($subscription['start_at']) && isset($subscription['expire_at'])){
-       $start_at = $subscription['start_at'];
-       $expire_at = $subscription['expire_at'];
-       $current_date = date("Y-m-d");
- 
-       $date1 = date_create($expire_at);
-       $date2 = date_create($current_date);
-       $diff = date_diff($date1,$date2);
-       // echo $diff->format("%R%a");
-       if(number_format($diff->format("%R%a")) > 0){
-         $echoSub =  "Expired Subscription";
-         $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'inactive' WHERE user_id_fk = {$userId}");
-       }else{
-         $echoSub= "Active Subscription";
-         $qUpdateSub = mysqli_query($link, "UPDATE subscription SET status = 'active' WHERE user_id_fk = {$userId}");
-       }
-     }
-   }
-   // echo $echoSub;
- }else{
-   // echo "No Subscription";
- }
-
- }
-
-$ifActive = mysqli_query($link, "SELECT * from subscription where user_id_fk='{$userId}'");
-
-
-if(mysqli_num_rows($ifActive) > 0){
-  while($s = mysqli_fetch_array($ifActive)){
-    $subs_id  = $s['subs_id'];
-    $sub_user_id  = $s['user_id_fk'];
-    $start_at  = $s['start_at'];
-    $expire_at =  $s['expire_at'];
-    $status = $s['status'];
-    $subtype = $s['subscriptionType'];
-  }
-}
-else {
-  $status = "null";
-}
- 
-
- if(isset($_GET['status'])) {
-  $gotStatus = $_GET['status'];
-
- }
 
 ?>
 <body>
@@ -270,107 +175,22 @@ else {
     
       <div class="page-container">
 
-      <?php if($gotStatus == "approved") { ?>
+     
       <form method="POST">
-        <h1 class="page-title">Establishment Management <span class="text-separator">&gt;</span><span class="small"> View establishment</span></h1>
-        <div class="estab-wrapper" style="margin-bottom: 0;">
-          <div class="estab-head-content">
-            <div class="content-hbetween mb-2">
-            <div class="content-vcenter-2 sub-type">
-                <div class="flex mr-4 subs">
-                  <div class="estab-view-text-2 sub-title subs">Subscription Details</div>
-                </div>
-                <div class="flex">
-                  <div class="estab-view-text-2">Subscription type: <span class="text-span-5" id="subType"><?php if(isset($subtype)) echo $subtype; else echo "NONE"; ?></span></div>
-                </div>
-                <?php if(isset($status)) { ?>
-                <div class="flex">
-                  <div class="estab-view-text-2">Subscription Status: <span class="text-span-5" id="subType"><?php if($status != "null" )echo $status; else echo "NONE"; ?></span></div>
-                </div>
-                <?php }?>
-              </div>
-              <div>
-                <?php
-                          $conn1 = new mysqli("localhost","root","","diskobre");
-                          // image type 4 is business permit
-                          $sql1 = "SELECT * FROM `estab_image` WHERE image_type = 5 && estab_id_fk = '$estabId' LIMIT 1";
-                          $result1 = $conn1->query($sql1);                    
-                ?>
-                <a href="#" class="link-2">View Receipt</a>
-                <br>
-                <?php  
-                  while($data1 = $result1->fetch_assoc()){ 
-                ?>
-                  <img src="../uploads/<?php echo $data1['image']?>" onerror="this.src='../uploads/no-image.png';"  alt="" style="height:300px; width:150px;">
-
-                <?php }?>
-                
-                 
-              </div>
-            </div>
-            <!-- form -->
+        <h1 class="page-title">Contribution Management <span class="text-separator">&gt;</span><span class="small"> View establishment</span></h1>
+        <div class="estab-wrapper" >
+          <div class="">
+        
             <div>
-              <div class="content-center-2 subscription">
-                <!-- dates -->
-                <div class="columns w-row">
-                  <!-- start Date -->
-                  <div class="column w-col w-col-6">
-                    <div class="st-date">Start date</div>
-                    <div class="form-field">
-                      <div class="html-embed w-embed">
-                        <input type="date" name="startDate" id="startDate" class="input-field" style="width:100%; " value="<?php if(isset($start_at)) echo $start_at;?>">
-                      </div>
-                    </div>
-                  </div>
-                  <!-- end Date -->
-                  <div class="column-2 w-col w-col-6">
-                    <div class="st-date">End Date</div>
-                    <div class="form-field">
-                      <div style="color: white;" id="endDate"><?php if(isset($expire_at)) echo date_format(date_create($expire_at),"m/d/Y"); else echo 'mm/dd/yyyy'; ?></div>
-                      <div class="html-embed w-embed hidden">
-                        <input type="date" name="endDate" id="endDateInput" class="input-field" style="width:100%;" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              
-              <div class="content-center subscription">
-                <?php  
-                  if(isset($status)) {  
-                    if($status == 'inactive') echo '<button type="submit" class="subscribe-btn" name="saveSub" style="width: auto; color: white; padding: 10px 20px;">Submit</button>'; 
-                  }
-                   ?>                
+              <div class="">
+                <!-- dates -->           
               </div>
             </div>
           </div>
         </div>
       </form>
-      <?php } ?>
-            <!-- <div class="content-center">
-              <div class="content-vcenter">
-                <div class="content-vcenter mr-2">
-                  <div class="estab-view-text mr-1">Start Date</div>
-                  <div class="border-white"><?php if(isset($start_at)) echo $start_at; else echo "-"; ?></div>
-                </div>
-                <div class="content-vcenter">
-                  <div class="estab-view-text mr-1">End Date</div>
-                  <div class="border-white"><?php if(isset($expire_at)) echo $expire_at; else echo "-"; ?>
-                   
-                  <?php 
-                    // if(isset($_POST['sub-submit'])) {
-                    //   echo date("Y-m-d", $date);
-                    // }
-                    // else {
-                    //   echo("-");
-                    // }?></div>
-
-                    
+    
           
-                </div>
-              </div>
-            </div> -->
           </div>
           <!-- estab info -->
           <div class="estab-body-view">
@@ -398,11 +218,11 @@ else {
                     <input disabled value= "<?php echo($address) ?>" type="text" name = "address" class="text-field estab-view w-input" maxlength="256" name="estab-address" data-name="estab address" placeholder="Dionisio St, Brgy. Zapatera, Cebu City, Cebu, 6000" id="estab-address"  required="true">
                   <label for="estab-contact" class="h4-estab-view">Contact number</label>
                     <input disabled  value= "<?php echo($contact) ?>" name = "contact" type="tel" class="text-field estab-view w-input"  name="estab-contact" data-name="estab contact" placeholder="09123456789" id="estab-contact"  required="true" maxlength="9" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" >
-                  <label for="estab-" class="h4-estab-view" >Email</label>
+                  <!--<label for="estab-" class="h4-estab-view" >Email</label>
                     <input disabled   value= "<?php echo($estab_email) ?>" name="email-establish"  type="email" class="text-field estab-view w-input" maxlength="256"  data-name="estab contact" placeholder="johnDoe@gmail.com" id="estab-contact" required="true">
                   <label for="estab-" class="h4-estab-view" >Business Permit Image</label>
 
-                    <!-- imgs lagay mo dito boss dave-->
+                    <!-- imgs lagay mo dito boss dharyl-->
                   <div class="estab-view flex-v">
                        
                       <?php 
@@ -418,15 +238,15 @@ else {
                           while($data = $result->fetch_assoc()){ 
                       ?>
                         <div class="gallery">
-                            <img src="../uploads/<?php echo $data['image']?>" alt="" style="width:600; height: 200px;"  onerror="this.src='../uploads/no-image.png';">
+                            <img src="../uploads/<?php echo $data['image']?>" alt="" style="width:900; height: 200px;"  onerror="this.src='../uploads/no-image.png';">
                             <!-- <p><?php echo $data['image']?></p> -->
                       
                         </div>
                     <?php }}else{?>
-                      <div class="gallery">
+                      <!--<div class="gallery">
                             <img src="../uploads/no-image.png" alt="" style="width:600; height: 200px;" >
                           
-                        </div>
+                        </div> -->
                     <?php }?>
                   </div>
                  
@@ -440,8 +260,8 @@ else {
                 </div>
                 <div class="content-center">
                 <?php if($gotStatus == "denied" || $gotStatus == "pending") { ?>
-                  <div class="content-vcenter">
-                  
+                 <div class="content-vcenter">
+                 
                     <button type="button" class="cancel-btn w-button " id="btn-deny"  >Deny</button>
                     <div class="px-3"></div>
                     <input type="button" value="Approve" name="approve" class="primary-button estab-view w-button" id="btn-approve" >

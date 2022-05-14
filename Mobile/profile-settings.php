@@ -15,14 +15,6 @@
   <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
   <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
-
-<!-- Ajax -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-
-
-
-
 </head>
 <body>
 
@@ -61,13 +53,14 @@ if(mysqli_num_rows($qUser) > 0){
 
       <a href="recently-visited.php" class="settings w-inline-block">
         <img src="images/Frame-141.svg" loading="lazy" alt="" class="mr-0-5">
-        <div class="text-style-3 text-size-14">Recently Visited</div>
+        <div class="text-style-3 text-size-14">Notifications</div>
         <div> <span class="counter"></span></div>
       </a>
       
       <a href="contribute-place.php" class="settings w-inline-block">
         <img src="images/Frame-127.svg" loading="lazy" alt="" class="mr-0-5">
         <div class="text-style-3 text-size-14">Contribute Establishment</div>
+        
       </a>
 
       <div class="text-style-3 text-size-14 color-gray mb-1 mt-2">Content</div>
@@ -84,10 +77,6 @@ if(mysqli_num_rows($qUser) > 0){
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
 </body>
 </html>
-
-
-
-
 
 <!-- Function for Ajax to refresh every 1000 miliseconds -->
 <script>
